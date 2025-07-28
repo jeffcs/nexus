@@ -1,0 +1,27 @@
+{
+  "name": "sequential-thinking",
+  "description": "Enhanced reasoning through sequential thought processes",
+  "type": "stdio",
+  "package": "@smithery/mcp-server-sequential-thinking",
+  "benefits": [
+    "Step-by-step reasoning for complex problems",
+    "Improved accuracy in multi-stage tasks",
+    "Better explanation of thought processes",
+    "Reduced errors in logical deduction"
+  ],
+  "use_cases": [
+    "Complex debugging scenarios",
+    "Architectural design decisions", 
+    "Multi-step problem solving",
+    "Algorithm development"
+  ],
+  "config": {
+    "enabled": true,
+    "maxSteps": 10,
+    "verbosity": "normal"
+  },
+  "integration": {
+    "agents": ["architect", "forge", "orchestrator"],
+    "commands": ["think", "reason", "analyze"]
+  }
+}
