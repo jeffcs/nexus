@@ -4,14 +4,15 @@ allowed-tools: [Read, Grep, Glob]
 argument-hint: <project-path>
 ---
 
-Analyze the codebase to understand:
+Analyze the codebase using NEXUS pattern recognition.
 
 Target: $ARGUMENTS
 
+Analysis includes:
 1. Project structure and organization
 2. Technology stack and dependencies
 3. Code patterns and conventions
 4. Architecture decisions
-5. Areas for improvement
+5. NEXUS integration opportunities
 
-Provide a comprehensive analysis report with actionable insights.
+Generate report in: `vault/research/analysis-[timestamp].md`

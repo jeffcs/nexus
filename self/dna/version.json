@@ -1,7 +1,7 @@
 {
-  "version": "1.0",
-  "codename": "Synthesis",
-  "released": 1753713297.662967,
+  "version": "2.0",
+  "codename": "Guided",
+  "released": 1753714306.818631,
   "features": [
     "Core directory structure",
     "Agent framework foundation",
@@ -10,6 +10,10 @@
     "Claude Code integration",
     "Evolution system",
     "Project templates",
-    "Agent slash commands"
+    "Agent slash commands",
+    "AI-guided evolution",
+    "Standardized /nexus: commands",
+    "Enhanced web-app template",
+    "Evolution patterns"
   ]
 }

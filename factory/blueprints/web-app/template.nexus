@@ -1,6 +1,6 @@
 name: Web Application
-version: 1.0.0
-description: Modern web application with Next.js and TypeScript
+version: 2.0.0
+description: Modern web application with Next.js, TypeScript, and streaming capabilities
 author: NEXUS Factory
 
 structure:
@@ -9,12 +9,24 @@ structure:
   - lib/
   - public/
   - types/
+  - services/
+  - hooks/
 
 dependencies:
-  - next: latest
-  - react: latest
-  - typescript: latest
-  - tailwindcss: latest
+  core:
+    - next: latest
+    - react: latest
+    - typescript: latest
+    - tailwindcss: latest
+  
+  streaming:
+    - "@types/hls.js": latest
+    - "hls.js": latest
+    - "react-player": latest
+  
+  data:
+    - "@supabase/supabase-js": latest
+    - "swr": latest
 
 scripts:
   dev: next dev
@@ -23,9 +35,18 @@ scripts:
   lint: next lint
   typecheck: tsc --noEmit
 
+features:
+  - Server-side rendering
+  - API routes
+  - Real-time data
+  - Video streaming
+  - Authentication ready
+  - Database integration
+
 includes:
   - .gitignore
   - README.md
   - tsconfig.json
   - tailwind.config.js
   - package.json
+  - .env.example
