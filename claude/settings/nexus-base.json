@@ -1,0 +1,40 @@
+{
+  "env": {
+    "NEXUS_ROOT": "${workspaceFolder}/nexus",
+    "NEXUS_VERSION": "1.0.0",
+    "NEXUS_AGENT_MODE": "collaborative"
+  },
+  "hooks": {
+    "UserPromptSubmit": [{
+      "matcher": "nexus|agent|evolve",
+      "hooks": [{
+        "type": "command",
+        "command": "${NEXUS_ROOT}/claude/hooks/prompt-enhancer.sh"
+      }]
+    }],
+    "PreToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "${NEXUS_ROOT}/claude/hooks/pre-tool-validator.sh"
+      }]
+    }],
+    "PostToolUse": [{
+      "matcher": ".*",
+      "hooks": [{
+        "type": "command",
+        "command": "${NEXUS_ROOT}/claude/hooks/post-tool-logger.sh"
+      }]
+    }]
+  },
+  "permissions": {
+    "allow": ["Bash", "Edit", "Read", "Write", "Glob", "Grep", "WebFetch"],
+    "customTools": {
+      "nexus": {
+        "command": "${NEXUS_ROOT}/nexus",
+        "description": "Run NEXUS commands",
+        "allowed": true
+      }
+    }
+  }
+}

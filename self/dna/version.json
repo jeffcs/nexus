@@ -1,11 +1,15 @@
 {
-  "version": "0.1.0",
-  "codename": "Genesis",
-  "released": "2025-07-28T13:35:44Z",
+  "version": "1.0",
+  "codename": "Synthesis",
+  "released": 1753713297.662967,
   "features": [
     "Core directory structure",
     "Agent framework foundation",
     "Evolution system base",
-    "Initial DNA configuration"
+    "Initial DNA configuration",
+    "Claude Code integration",
+    "Evolution system",
+    "Project templates",
+    "Agent slash commands"
   ]
 }

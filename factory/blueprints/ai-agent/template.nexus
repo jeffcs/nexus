@@ -1,0 +1,15 @@
+name: AI Agent
+version: 1.0.0
+description: NEXUS-compatible AI agent
+author: NEXUS Factory
+
+structure:
+  - agent.yaml
+  - prompts/
+  - tools/
+  - tests/
+
+configuration:
+  capabilities: []
+  tools: []
+  version: 0.1.0

@@ -1,0 +1,31 @@
+name: Web Application
+version: 1.0.0
+description: Modern web application with Next.js and TypeScript
+author: NEXUS Factory
+
+structure:
+  - app/
+  - components/
+  - lib/
+  - public/
+  - types/
+
+dependencies:
+  - next: latest
+  - react: latest
+  - typescript: latest
+  - tailwindcss: latest
+
+scripts:
+  dev: next dev
+  build: next build
+  start: next start
+  lint: next lint
+  typecheck: tsc --noEmit
+
+includes:
+  - .gitignore
+  - README.md
+  - tsconfig.json
+  - tailwind.config.js
+  - package.json
