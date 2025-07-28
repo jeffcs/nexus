@@ -32,7 +32,12 @@ case "${1:-help}" in
     
     evolve)
         shift
-        "$NEXUS_ROOT/self/evolve/evolve.sh" upgrade "$@"
+        # If no arguments, run upgrade without version (auto-increment)
+        if [ $# -eq 0 ]; then
+            "$NEXUS_ROOT/self/evolve/evolve.sh" upgrade
+        else
+            "$NEXUS_ROOT/self/evolve/evolve.sh" upgrade "$@"
+        fi
         ;;
     
     agent)

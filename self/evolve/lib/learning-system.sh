@@ -6,7 +6,7 @@ if [ -z "$NEXUS_ROOT" ]; then
     NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 fi
 LEARNINGS_DIR="$NEXUS_ROOT/self/evolve/evolutions"
-CURRENT_VERSION=$(jq -r '.version // "1.0.0"' "$NEXUS_ROOT/self/dna/version.json")
+CURRENT_VERSION=$(jq -r '.version // "4.0.0"' "$NEXUS_ROOT/self/dna/version.json" 2>/dev/null || echo "4.0.0")
 
 # Colors
 GREEN='\033[0;32m'

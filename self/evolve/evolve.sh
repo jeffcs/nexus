@@ -2,11 +2,13 @@
 # NEXUS Evolution Engine - Enhanced with Claude Code Integration
 
 NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-NEXUS_VERSION="2.0.0"
+# Get current version dynamically
+NEXUS_VERSION=$(jq -r '.version // "4.0.0"' "$NEXUS_ROOT/self/dna/version.json" 2>/dev/null || echo "4.0.0")
 
 # Source common functions if available
 source "$NEXUS_ROOT/self/evolve/lib/common.sh" 2>/dev/null || true
 source "$NEXUS_ROOT/self/evolve/lib/learning-system.sh" 2>/dev/null || true
+source "$NEXUS_ROOT/self/evolve/lib/evolution-generator.sh" 2>/dev/null || true
 
 # Colors for output
 RED='\033[0;31m'
@@ -40,8 +42,15 @@ show_status() {
 }
 
 run_evolution() {
-    local evolution_version="${1:-2.0}"
+    local evolution_version="${1:-}"
     local evolution_guidance="${2:-}"
+    
+    # If no version specified, calculate next major version
+    if [ -z "$evolution_version" ]; then
+        local current_version=$(jq -r '.version // "4.0.0"' "$NEXUS_ROOT/self/dna/version.json" 2>/dev/null || echo "4.0.0")
+        local major_version=$(echo "$current_version" | cut -d. -f1)
+        evolution_version="$((major_version + 1)).0.0"
+    fi
     
     # Capture learnings and validate proposals before evolution
     if type capture_learnings &>/dev/null; then
@@ -77,11 +86,27 @@ run_evolution() {
     
     # Check if evolution script exists
     if [ ! -f "$evolution_script" ]; then
-        echo "⚠️  Evolution script not found. Creating it now..."
-        if [ "$evolution_version" = "2.0" ]; then
-            create_evolution_2_0_script "$evolution_guidance"
+        echo "⚠️  Evolution script not found. Generating intelligent evolution..."
+        
+        # Use evolution generator
+        if type generate_next_evolution &>/dev/null; then
+            local evolution_dir=$(generate_next_evolution "$current_version")
+            evolution_script="$evolution_dir/evolution.sh"
+            echo "✅ Generated evolution plan: $evolution_dir/plan.md"
+            echo "📝 Review the plan before proceeding!"
+            echo ""
+            cat "$evolution_dir/plan.md"
+            echo ""
+            read -p "Proceed with this evolution? (y/N) " -n 1 -r
+            echo
+            [[ ! $REPLY =~ ^[Yy]$ ]] && return 1
         else
-            create_evolution_script "$evolution_version"
+            # Fallback to old method
+            if [ "$evolution_version" = "2.0" ]; then
+                create_evolution_2_0_script "$evolution_guidance"
+            else
+                create_evolution_script "$evolution_version"
+            fi
         fi
     fi
     
@@ -457,7 +482,8 @@ case "${1:-status}" in
         echo ""
         echo "Commands:"
         echo "  status              Show system status"
-        echo "  upgrade [version]   Upgrade to specified version (default: 2.0)"
+        echo "  upgrade             Evolve to next version (auto-increments)"
+        echo "  upgrade [version]   Evolve to specific version"
         echo "  upgrade \"guidance\"  AI-guided evolution with natural language"
         echo "  agent <name>        Create a new agent"
         echo "  rollback [version]  Rollback to previous version"
@@ -465,7 +491,8 @@ case "${1:-status}" in
         echo ""
         echo "Examples:"
         echo "  ./evolve.sh status"
-        echo "  ./evolve.sh upgrade 2.0"
+        echo "  ./evolve.sh upgrade           # Evolves to next major version"
+        echo "  ./evolve.sh upgrade 6.0.0     # Evolves to specific version"
         echo "  ./evolve.sh upgrade \"add logging to all agents\""
         echo "  ./evolve.sh agent analyst"
         ;;
