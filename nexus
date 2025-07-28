@@ -1,0 +1,24 @@
+#!/bin/bash
+# NEXUS CLI Entry Point
+
+NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+case "$1" in
+  agent)
+    shift
+    "$NEXUS_ROOT/core/runtime/agent_runner.sh" "$@"
+    ;;
+  evolve)
+    shift
+    "$NEXUS_ROOT/self/evolve/evolve.sh" "$@"
+    ;;
+  *)
+    echo "NEXUS - Neural Execution & eXperimentation Unified System"
+    echo ""
+    echo "Usage: ./nexus [agent|evolve] <args>"
+    echo ""
+    echo "Commands:"
+    echo "  agent <name> <task>  - Run an agent with a task"
+    echo "  evolve <command>     - Evolve the system"
+    ;;
+esac

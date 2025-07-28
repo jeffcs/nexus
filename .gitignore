@@ -1,0 +1,51 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Local data
+modules/augments/memory/local/
+vault/artifacts/local/
+lab/experiments/tmp/
+lab/prototypes/tmp/
+
+# Personal configs
+*.personal.*
+*.private.*
+*-secret.*
+
+# Generated files
+*.generated.*
