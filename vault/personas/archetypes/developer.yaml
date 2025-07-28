@@ -1,0 +1,63 @@
+id: developer-archetype
+name: Developer Archetype
+archetype: Software Developer
+age: 25-40
+occupation: Full-Stack Developer
+technical_level: Expert
+
+demographics:
+  location: Global
+  industry: Technology
+  company_size: Small/Medium/Enterprise
+
+goals:
+  primary:
+    - Build robust, maintainable software efficiently
+    - Automate repetitive tasks
+    - Improve code quality and performance
+  secondary:
+    - Learn new technologies and patterns
+    - Collaborate effectively with team
+    - Ship features quickly without sacrificing quality
+
+pain_points:
+  - Context switching between multiple projects
+  - Debugging complex issues without proper tools
+  - Maintaining consistency across large codebases
+  - Documentation that's outdated or missing
+
+behaviors:
+  - daily_usage: 8-10 hours
+  - preferred_devices: Desktop with multiple monitors
+  - work_style: Individual with collaborative sprints
+  - learning_preference: Hands-on with documentation reference
+
+needs:
+  functional:
+    - Fast, keyboard-driven interfaces
+    - Powerful search and navigation
+    - Integration with existing tools (Git, IDE, CI/CD)
+    - Clear error messages and debugging info
+  emotional:
+    - Feel productive and in control
+    - Confidence in code quality
+    - Sense of progress and achievement
+
+quote: "I need tools that get out of my way and let me focus on solving problems"
+
+scenarios:
+  - name: Feature Implementation
+    context: Starting a new feature from a ticket
+    trigger: Assigned a new task in sprint
+    actions: Design, implement, test, and deploy
+    success: Feature works, tests pass, code is maintainable
+
+accessibility:
+  - Keyboard navigation essential
+  - High contrast themes for long coding sessions
+  - Screen reader compatibility for pair programming
+
+technical_constraints:
+  - Terminal-based workflows
+  - Version control integration required
+  - Must work offline

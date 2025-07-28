@@ -1,0 +1,55 @@
+id: [unique-identifier]
+name: [Full Name]
+archetype: [User Type - e.g., Power User, Casual User, Administrator]
+age: [Age or range]
+occupation: [Job Title/Role]
+technical_level: [Novice/Intermediate/Expert]
+
+demographics:
+  location: [Geographic location]
+  industry: [Industry/Domain]
+  company_size: [Solo/Small/Medium/Enterprise]
+
+goals:
+  primary:
+    - [Main objective when using the product]
+  secondary:
+    - [Additional goals]
+    - [Nice-to-have outcomes]
+
+pain_points:
+  - [Current frustration or problem]
+  - [Time-consuming tasks]
+  - [Technical barriers]
+
+behaviors:
+  - daily_usage: [How often they use similar products]
+  - preferred_devices: [Desktop/Mobile/Tablet]
+  - work_style: [Individual/Collaborative]
+  - learning_preference: [Visual/Written/Video/Hands-on]
+
+needs:
+  functional:
+    - [Core functionality requirements]
+    - [Must-have features]
+  emotional:
+    - [How they want to feel using the product]
+    - [Psychological needs]
+
+quote: "[Something this persona might say about their needs]"
+
+scenarios:
+  - name: [Scenario name]
+    context: [When/where this happens]
+    trigger: [What initiates this scenario]
+    actions: [What they need to do]
+    success: [What success looks like]
+
+accessibility:
+  - [Any accessibility requirements]
+  - [Assistive technologies used]
+
+technical_constraints:
+  - [Browser limitations]
+  - [Network conditions]
+  - [Device constraints]

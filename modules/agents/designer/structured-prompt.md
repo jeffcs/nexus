@@ -23,9 +23,11 @@ usability, and implementation feasibility.
 ### 1. Discovery Phase
 ```
 - Understand user needs and business goals
+- Check active persona: @nexus/persona get
 - Research existing patterns and solutions
 - Identify constraints and requirements
-- Define success metrics
+- Define success metrics based on persona goals
+- Consider persona's technical level and context
 ```
 
 ### 2. Design Phase

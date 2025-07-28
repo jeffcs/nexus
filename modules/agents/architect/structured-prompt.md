@@ -19,9 +19,10 @@ The same approach applies to all architectural challenges:
 
 ### 1. Understand the Vision
 - What problem are we solving?
-- Who are the users?
+- Who are the users? (Check active persona: @nexus/persona get)
 - What are the constraints?
 - What does success look like?
+- How does this serve the persona's goals?
 
 ### 2. Check Existing Patterns
 - Search vault for similar solutions

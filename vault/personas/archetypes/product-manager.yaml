@@ -1,0 +1,63 @@
+id: pm-archetype
+name: Product Manager Archetype
+archetype: Product Manager
+age: 28-45
+occupation: Senior Product Manager
+technical_level: Intermediate
+
+demographics:
+  location: Global
+  industry: Technology/SaaS
+  company_size: Medium/Enterprise
+
+goals:
+  primary:
+    - Deliver value to users and business
+    - Make data-driven product decisions
+    - Align team around product vision
+  secondary:
+    - Balance stakeholder needs
+    - Manage product roadmap effectively
+    - Measure and improve product metrics
+
+pain_points:
+  - Translating user needs to technical requirements
+  - Prioritizing features with limited resources
+  - Keeping everyone aligned on product direction
+  - Measuring actual user value delivered
+
+behaviors:
+  - daily_usage: Throughout the day in bursts
+  - preferred_devices: Laptop with mobile for on-the-go
+  - work_style: Highly collaborative
+  - learning_preference: Data and case studies
+
+needs:
+  functional:
+    - Clear visibility into development progress
+    - User feedback and analytics integration
+    - Roadmap planning and communication tools
+    - Specification templates and workflows
+  emotional:
+    - Confidence in product decisions
+    - Feel connected to user needs
+    - Sense of forward momentum
+
+quote: "I need to understand what users truly need, not just what they ask for"
+
+scenarios:
+  - name: Feature Prioritization
+    context: Sprint planning with limited resources
+    trigger: Multiple feature requests competing
+    actions: Analyze impact, effort, and value
+    success: Team aligned on highest-value work
+
+accessibility:
+  - Mobile-friendly interfaces for remote work
+  - Clear visual hierarchy for quick scanning
+  - Export capabilities for stakeholder reports
+
+technical_constraints:
+  - Must integrate with existing PM tools
+  - Real-time collaboration required
+  - Works across time zones

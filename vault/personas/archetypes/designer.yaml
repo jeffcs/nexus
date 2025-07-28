@@ -1,0 +1,64 @@
+id: designer-archetype
+name: Designer Archetype
+archetype: UX/UI Designer
+age: 23-35
+occupation: Product Designer
+technical_level: Intermediate
+
+demographics:
+  location: Urban centers
+  industry: Design/Technology
+  company_size: Startup/Medium
+
+goals:
+  primary:
+    - Create intuitive, beautiful user experiences
+    - Maintain design consistency across products
+    - Validate designs with user feedback
+  secondary:
+    - Collaborate smoothly with developers
+    - Build and evolve design systems
+    - Improve accessibility and inclusion
+
+pain_points:
+  - Design-to-development handoff friction
+  - Maintaining design system documentation
+  - Balancing user needs with technical constraints
+  - Communicating design decisions effectively
+
+behaviors:
+  - daily_usage: 6-8 hours
+  - preferred_devices: Desktop with tablet for sketching
+  - work_style: Collaborative with focused design time
+  - learning_preference: Visual with case studies
+
+needs:
+  functional:
+    - Visual design tools with developer handoff
+    - Component libraries and design systems
+    - Prototyping and user testing capabilities
+    - Version control for design files
+  emotional:
+    - Feel creative and empowered
+    - See designs come to life accurately
+    - Pride in user satisfaction
+
+quote: "Good design is invisible - users should focus on their goals, not the interface"
+
+scenarios:
+  - name: Component Design
+    context: Creating a new UI component
+    trigger: New feature requires custom component
+    actions: Research, sketch, prototype, spec, handoff
+    success: Component is reusable, accessible, and implemented correctly
+
+accessibility:
+  - Color contrast checking tools
+  - Screen reader testing capability
+  - Keyboard navigation verification
+  - WCAG compliance validation
+
+technical_constraints:
+  - Must export to developer-friendly formats
+  - Real device preview required
+  - Performance impact awareness
