@@ -1,0 +1,41 @@
+# Project Assistant Configuration
+
+This project uses NEXUS v3.0 with spec-driven development.
+
+## Project Overview
+
+[PROJECT DESCRIPTION]
+
+## Development Workflow
+
+1. **Create Spec**: Use `/nexus:spec` to define features
+2. **Design**: Use `/nexus:architect` for system design  
+3. **Implement**: Use `/nexus:forge` for implementation
+4. **Validate**: Use `/nexus:sentinel` for quality checks
+
+## Available Commands
+
+- `/nexus:help` - Show comprehensive documentation
+- `/nexus:spec` - Create feature specifications
+- `/nexus:orchestrator` - Coordinate multi-agent tasks
+- All standard NEXUS agent commands
+
+## Project Structure
+
+```
+[PROJECT STRUCTURE]
+```
+
+## Current Specs
+
+Active specs in `specs/` directory:
+- [List active specs]
+
+## Development Standards
+
+Follow patterns in:
+- @.nexus/standards/code-style.md
+- @.nexus/standards/best-practices.md
+
+---
+*Powered by NEXUS v3.0 - Spec-driven development with AI agents*

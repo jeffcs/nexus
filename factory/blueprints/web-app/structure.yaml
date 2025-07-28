@@ -1,0 +1,32 @@
+name: Web Application
+version: 3.0.0
+description: Structured web app with spec-driven development
+
+directories:
+  - .nexus/          # NEXUS configuration
+  - .claude/         # Claude Code settings
+  - app/             # Next.js app directory
+  - components/      # React components
+  - lib/             # Utilities and helpers
+  - services/        # API services
+  - hooks/           # Custom React hooks
+  - types/           # TypeScript types
+  - specs/           # Feature specifications
+  - tests/           # Test files
+
+files:
+  - .nexus/config.yaml
+  - .claude/settings.json
+  - CLAUDE.md
+  - README.md
+  - package.json
+  - tsconfig.json
+  - next.config.js
+  - .env.example
+
+patterns:
+  - Component-based architecture
+  - Service layer pattern
+  - Custom hooks for logic
+  - Spec-driven development
+  - Test-first approach

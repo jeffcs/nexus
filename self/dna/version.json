@@ -1,7 +1,7 @@
 {
-  "version": "2.0",
-  "codename": "Guided",
-  "released": 1753714306.818631,
+  "version": "3.0",
+  "codename": "Structured",
+  "released": 1753715725.94003,
   "features": [
     "Core directory structure",
     "Agent framework foundation",
@@ -14,6 +14,12 @@
     "AI-guided evolution",
     "Standardized /nexus: commands",
     "Enhanced web-app template",
-    "Evolution patterns"
+    "Evolution patterns",
+    "Comprehensive help system",
+    "Spec-driven development",
+    "Enhanced agent guidance",
+    "Subagent integration",
+    "Workflow engine",
+    "Structured blueprints"
   ]
 }
