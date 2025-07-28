@@ -1,0 +1,31 @@
+name: Microservice Seed
+version: 1.0.0
+description: Quick-start microservice with best practices
+
+structure:
+  - src/
+    - index.js
+    - config.js
+    - routes/
+    - services/
+    - middleware/
+  - tests/
+  - docs/
+  - .env.example
+  - Dockerfile
+  - docker-compose.yml
+  - package.json
+  - README.md
+
+dependencies:
+  - express: latest
+  - dotenv: latest
+  - winston: latest
+  - jest: latest
+
+features:
+  - Health checks
+  - Logging
+  - Error handling
+  - Docker ready
+  - Test setup

@@ -1,24 +1,98 @@
 #!/bin/bash
-# NEXUS CLI Entry Point
+# NEXUS CLI - Enhanced
 
 NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-case "$1" in
-  agent)
-    shift
-    "$NEXUS_ROOT/core/runtime/agent_runner.sh" "$@"
-    ;;
-  evolve)
-    shift
-    "$NEXUS_ROOT/self/evolve/evolve.sh" "$@"
-    ;;
-  *)
-    echo "NEXUS - Neural Execution & eXperimentation Unified System"
-    echo ""
-    echo "Usage: ./nexus [agent|evolve] <args>"
-    echo ""
-    echo "Commands:"
-    echo "  agent <name> <task>  - Run an agent with a task"
-    echo "  evolve <command>     - Evolve the system"
-    ;;
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+# Show banner
+show_banner() {
+    # Get version from version.json
+    local version=$(jq -r '.version // "4.0.0"' "$NEXUS_ROOT/self/dna/version.json" 2>/dev/null || echo "4.0.0")
+    echo -e "${BLUE}"
+    echo "╔═══════════════════════════════════════╗"
+    echo "║             NEXUS v${version}              ║"
+    echo "║  Neural Execution & eXperimentation   ║"
+    echo "║         Unified System                ║"
+    echo "╚═══════════════════════════════════════╝"
+    echo -e "${NC}"
+}
+
+# Main command handler
+case "${1:-help}" in
+    status)
+        show_banner
+        "$NEXUS_ROOT/self/evolve/evolve.sh" status
+        ;;
+    
+    evolve)
+        shift
+        "$NEXUS_ROOT/self/evolve/evolve.sh" upgrade "$@"
+        ;;
+    
+    agent)
+        shift
+        case "${1:-list}" in
+            list)
+                "$NEXUS_ROOT/core/runtime/agent-runtime.sh" list
+                ;;
+            run)
+                shift
+                "$NEXUS_ROOT/core/runtime/agent-runtime.sh" run "$@"
+                ;;
+            *)
+                "$NEXUS_ROOT/core/runtime/agent-runtime.sh" run "$@"
+                ;;
+        esac
+        ;;
+    
+    orchestrate)
+        shift
+        "$NEXUS_ROOT/core/orchestrator/orchestrator.sh" "$@"
+        ;;
+    
+    memory)
+        shift
+        "$NEXUS_ROOT/core/memory/memory-system.sh" "$@"
+        ;;
+    
+    analyze)
+        "$NEXUS_ROOT/core/evolution/evolution-engine.sh" analyze
+        ;;
+    
+    help|--help|-h|"")
+        show_banner
+        echo "Usage: nexus [command] [options]"
+        echo ""
+        echo "Commands:"
+        echo "  status              Show system status"
+        echo "  evolve              Run evolution"
+        echo "  agent [name] [task] Run an agent"
+        echo "  orchestrate [task]  Coordinate multiple agents"
+        echo "  memory [cmd]        Memory system operations"
+        echo "  analyze             Analyze system for improvements"
+        echo "  help               Show this help"
+        echo ""
+        echo "Examples:"
+        echo "  nexus status"
+        echo "  nexus agent forge 'create a REST API'"
+        echo "  nexus orchestrate 'build a chat application'"
+        echo "  nexus evolve 'add caching to all agents'"
+        echo ""
+        echo "Use Claude Code commands:"
+        echo "  /nexus:help - Comprehensive help"
+        echo "  /nexus:spec - Create specifications"
+        echo "  /nexus:genesis - Bootstrap projects"
+        ;;
+    
+    *)
+        echo -e "${RED}Unknown command: $1${NC}"
+        echo "Use 'nexus help' for usage information"
+        exit 1
+        ;;
 esac

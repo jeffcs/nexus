@@ -1,0 +1,28 @@
+name: JavaScript Full-Stack
+version: 1.0.0
+description: Modern JavaScript full-stack application
+
+frontend:
+  framework: Next.js 15
+  language: TypeScript
+  styling: Tailwind CSS
+  components: shadcn/ui
+  state: Zustand
+  data: SWR
+
+backend:
+  runtime: Node.js
+  framework: Next.js API Routes
+  database: PostgreSQL (Supabase)
+  orm: None
+  auth: NextAuth.js
+
+devops:
+  hosting: Vercel
+  database: Supabase
+  monitoring: Vercel Analytics
+  ci: GitHub Actions
+
+testing:
+  unit: Jest
+  integration: Playwright

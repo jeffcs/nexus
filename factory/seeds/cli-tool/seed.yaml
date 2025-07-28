@@ -1,0 +1,24 @@
+name: CLI Tool Seed
+version: 1.0.0
+description: Command-line tool scaffold
+
+structure:
+  - bin/
+    - cli.js
+  - lib/
+    - commands/
+    - utils/
+  - tests/
+  - package.json
+  - README.md
+
+dependencies:
+  - commander: latest
+  - chalk: latest
+  - inquirer: latest
+
+features:
+  - Command structure
+  - Colorful output
+  - Interactive prompts
+  - Help system

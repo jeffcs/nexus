@@ -1,0 +1,27 @@
+name: Python AI/ML Stack
+version: 1.0.0
+description: Python stack for AI and machine learning
+
+core:
+  language: Python 3.11+
+  framework: FastAPI
+  async: asyncio
+
+ai_ml:
+  llm: OpenAI/Anthropic
+  embeddings: OpenAI
+  vectordb: Pinecone/Weaviate
+  ml: scikit-learn
+  deep_learning: PyTorch
+
+data:
+  processing: pandas
+  visualization: matplotlib/plotly
+  storage: PostgreSQL
+  caching: Redis
+
+deployment:
+  containerization: Docker
+  orchestration: Kubernetes
+  cloud: AWS/GCP
+  monitoring: Prometheus/Grafana

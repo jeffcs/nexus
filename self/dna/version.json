@@ -1,7 +1,7 @@
 {
-  "version": "3.0",
-  "codename": "Structured",
-  "released": 1753715725.94003,
+  "version": "4.0.0",
+  "codename": "Complete",
+  "released": 1753717547.62184,
   "features": [
     "Core directory structure",
     "Agent framework foundation",
@@ -20,6 +20,13 @@
     "Enhanced agent guidance",
     "Subagent integration",
     "Workflow engine",
-    "Structured blueprints"
+    "Structured blueprints",
+    "Complete agent system",
+    "Core runtime implementation",
+    "Memory system",
+    "Orchestrator",
+    "Factory seeds and stacks",
+    "Evolution engine",
+    "Enhanced CLI"
   ]
 }
