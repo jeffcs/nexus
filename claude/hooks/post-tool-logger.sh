@@ -6,19 +6,31 @@ NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 # Read the input JSON
 input=$(cat)
-tool=$(echo "$input" | jq -r '.tool // ""')
+
+# Extract tool name from the input - Claude sends it as 'toolName'
+tool=$(echo "$input" | jq -r '.toolName // .tool // "unknown"')
 timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Log tool usage for learning
 log_file="$NEXUS_ROOT/self/metrics/tool-usage.jsonl"
 mkdir -p "$(dirname "$log_file")"
 
-# Append to log
-echo "$input" | jq --arg time "$timestamp" --arg tool "$tool" '{
+# Extract meaningful data from the input
+parameters=$(echo "$input" | jq -c '.parameters // {}')
+result_type=$(echo "$input" | jq -r '.result | type // "unknown"')
+result_size=$(echo "$input" | jq -r '.result | if type == "string" then length else 0 end')
+
+# Append to log with proper structure
+echo "$input" | jq --arg time "$timestamp" \
+                   --arg tool "$tool" \
+                   --arg params "$parameters" \
+                   --arg rtype "$result_type" \
+                   --arg rsize "$result_size" '{
     timestamp: $time,
     tool: $tool,
-    parameters: .parameters,
-    result_summary: (.result | type)
+    parameters: $params,
+    result_type: $rtype,
+    result_size: $rsize
 }' >> "$log_file"
 
 # Pass through

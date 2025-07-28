@@ -5,9 +5,12 @@
 
 NEXUS is a rapidly-evolving AI building operating system - a living framework for developing, orchestrating, and evolving AI-powered development workflows.
 
+**[📋 Mission Statement](./MISSION.md)** - NEXUS is the ultimate agentic toolbox for rapid learning, product research and development, and hardcore Principal Engineering behind High Water Labs' growing portfolio of AI-powered SaaS businesses.
+
 ## Core Philosophy
 - **Self-Modifying**: The system can rewrite and improve itself
 - **Knowledge-Accumulating**: Every interaction teaches the system
+- **Intelligent Evolution**: Learning system analyzes git history and proposes changes
 - **Modular**: Hot-swappable components for maximum flexibility
 - **AI-First**: Built to be understood and modified by AI agents
 
@@ -15,13 +18,16 @@ NEXUS is a rapidly-evolving AI building operating system - a living framework fo
 
 ```bash
 # 1. Check system status
-./self/evolve/evolve.sh status
+./nexus status
 
-# 2. Create a new agent
+# 2. Initialize NEXUS in a new project
+cd your-project && /nexus/init
+
+# 3. Evolve with intelligent learning
+./self/evolve/evolve.sh upgrade "your evolution goal"
+
+# 4. Create a new agent
 ./self/evolve/evolve.sh agent my-agent
-
-# 3. Bootstrap a new project
-./self/evolve/bootstrap.sh my-new-project
 ```
 
 ## 📁 Structure
@@ -89,8 +95,13 @@ Specialized AI personalities with defined roles:
 # View current state
 ./self/evolve/evolve.sh status
 
-# Upgrade the system
-./self/evolve/evolve.sh upgrade
+# Upgrade with version
+./self/evolve/evolve.sh upgrade 5.0
+
+# AI-guided evolution with intelligent learning
+./self/evolve/evolve.sh upgrade "add testing framework"
+# System will analyze git history, extract learnings, and propose changes
+# Press ESC during proposals to add more guidance
 
 # Create new components
 ./self/evolve/evolve.sh agent <name>
@@ -138,10 +149,12 @@ echo "## My Pattern" >> vault/patterns/my-pattern.md
 ## 📈 Growth & Learning
 
 NEXUS improves through:
-1. **Pattern Recognition**: Successful solutions become reusable patterns
-2. **Experiment Results**: Lab work informs system evolution
-3. **Agent Collaboration**: Agents learn from each other's outputs
-4. **Self-Modification**: The system can rewrite its own components
+1. **Intelligent Evolution**: Analyzes git history and proposes data-driven changes
+2. **Pattern Recognition**: Successful solutions become reusable patterns
+3. **Experiment Results**: Lab work informs system evolution
+4. **Agent Collaboration**: Agents learn from each other's outputs
+5. **Self-Modification**: The system can rewrite its own components
+6. **Learning Archive**: Every evolution captures and preserves insights
 
 ## 🤝 Contributing
 

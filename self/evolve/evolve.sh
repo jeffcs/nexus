@@ -6,6 +6,7 @@ NEXUS_VERSION="2.0.0"
 
 # Source common functions if available
 source "$NEXUS_ROOT/self/evolve/lib/common.sh" 2>/dev/null || true
+source "$NEXUS_ROOT/self/evolve/lib/learning-system.sh" 2>/dev/null || true
 
 # Colors for output
 RED='\033[0;31m'
@@ -42,15 +43,31 @@ run_evolution() {
     local evolution_version="${1:-2.0}"
     local evolution_guidance="${2:-}"
     
+    # Capture learnings and validate proposals before evolution
+    if type capture_learnings &>/dev/null; then
+        capture_learnings "$evolution_guidance"
+        # Update guidance with final validated version
+        if [ -f "$NEXUS_ROOT/self/learnings/evolution-guidance-final.md" ]; then
+            evolution_guidance=$(cat "$NEXUS_ROOT/self/learnings/evolution-guidance-final.md")
+        fi
+    fi
+    
     # Determine evolution script name based on version
     local script_name
     case "$evolution_version" in
         1.0) script_name="1.0-synthesis" ;;
         2.0) script_name="2.0-guided" ;;
+        3.0) script_name="3.0-evolution" ;;
+        4.0) script_name="4.0-core-implementation" ;;
         *) script_name="${evolution_version}-evolution" ;;
     esac
     
-    local evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${script_name}.sh"
+    # Check for new directory structure first
+    local evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${script_name}/evolution.sh"
+    if [ ! -f "$evolution_script" ]; then
+        # Fall back to old structure
+        evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${script_name}.sh"
+    fi
     
     echo "🧬 Initiating system evolution to v${evolution_version}..."
     if [ -n "$evolution_guidance" ]; then
@@ -102,6 +119,15 @@ run_evolution() {
 evolve_with_guidance() {
     # New function for guided evolution
     local guidance="$1"
+    
+    # Capture learnings and validate proposals before evolution
+    if type capture_learnings &>/dev/null; then
+        capture_learnings "$guidance"
+        # Update guidance with final validated version
+        if [ -f "$NEXUS_ROOT/self/learnings/evolution-guidance-final.md" ]; then
+            guidance=$(cat "$NEXUS_ROOT/self/learnings/evolution-guidance-final.md")
+        fi
+    fi
     
     echo "🤖 AI-Guided Evolution Request"
     echo "================================"
@@ -186,11 +212,51 @@ post_evolution_tasks() {
         '.evolutions += [{"version": $ver, "timestamp": $time, "status": "success"}]' \
         "$evolution_log" > "$evolution_log.tmp" && mv "$evolution_log.tmp" "$evolution_log"
     
+    # Archive learnings in evolution directory
+    local evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/${version}-evolution"
+    if [ ! -d "$evolution_dir" ]; then
+        # Try alternate naming schemes
+        evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/${version}"
+        if [ ! -d "$evolution_dir" ]; then
+            case "$version" in
+                1.0) evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/1.0-synthesis" ;;
+                2.0) evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/2.0-guided" ;;
+                3.0) evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/3.0-evolution" ;;
+                4.0) evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/4.0-core-implementation" ;;
+                *) evolution_dir="$NEXUS_ROOT/self/evolve/evolutions/${version}-evolution" ;;
+            esac
+        fi
+    fi
+    
+    # Save any temporary learnings to evolution directory
+    if [ -d "$NEXUS_ROOT/self/learnings" ] && [ -n "$(ls -A "$NEXUS_ROOT/self/learnings" 2>/dev/null)" ]; then
+        echo "📚 Archiving evolution learnings..."
+        mkdir -p "$evolution_dir"
+        find "$NEXUS_ROOT/self/learnings" -maxdepth 1 -name "*.md" -exec mv {} "$evolution_dir/" \;
+    fi
+    
+    # Create git tag if in git repo
+    if [ -d ".git" ] && command -v git &> /dev/null; then
+        echo "🏷️  Creating git tag v${version}..."
+        git tag -a "v${version}" -m "NEXUS Evolution v${version} - $(date)" 2>/dev/null || echo "   Tag already exists"
+    fi
+    
     # Check Claude Code integration
     if command -v claude &> /dev/null || [ -d "$HOME/.claude" ]; then
         echo "🔗 Updating Claude Code integration..."
         integrate_claude_code
     fi
+    
+    # Generate evolution summary
+    echo ""
+    echo "📋 Evolution Summary"
+    echo "==================="
+    echo "Version: ${version}"
+    echo "Date: $(date)"
+    if [ -f "$NEXUS_ROOT/self/learnings/archive/v${version}/evolution-${version}-complete.md" ]; then
+        echo "Learnings: Archived to self/learnings/archive/v${version}/"
+    fi
+    echo ""
 }
 
 integrate_claude_code() {

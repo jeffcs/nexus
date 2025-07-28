@@ -1,0 +1,39 @@
+{
+  "id": "supabase-auth",
+  "name": "Supabase Authentication Setup",
+  "version": "1.0.0",
+  "category": "authentication",
+  "description": "Complete Supabase authentication with React hooks",
+  "context": "Use when building SaaS applications that need user authentication",
+  "source": {
+    "project": "example-saas",
+    "discovered": "2025-07-28T00:00:00Z",
+    "pr_numbers": [42, 43]
+  },
+  "applicability": {
+    "project_types": ["web-app"],
+    "tech_stack": ["react", "nextjs", "typescript"],
+    "tags": ["auth", "supabase", "saas", "user-management"]
+  },
+  "implementation": {
+    "files": {
+      "lib/supabase.ts": "import { createClient } from '@supabase/supabase-js'\n\nconst supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!\nconst supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!\n\nexport const supabase = createClient(supabaseUrl, supabaseAnonKey)",
+      "hooks/useAuth.tsx": "import { useEffect, useState } from 'react'\nimport { User } from '@supabase/supabase-js'\nimport { supabase } from '@/lib/supabase'\n\nexport function useAuth() {\n  const [user, setUser] = useState<User | null>(null)\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    const { data: { subscription } } = supabase.auth.onAuthStateChange(\n      (_event, session) => {\n        setUser(session?.user ?? null)\n        setLoading(false)\n      }\n    )\n\n    return () => subscription.unsubscribe()\n  }, [])\n\n  return { user, loading }\n}",
+      "components/AuthProvider.tsx": "import { createContext, useContext } from 'react'\nimport { useAuth } from '@/hooks/useAuth'\n\nconst AuthContext = createContext<ReturnType<typeof useAuth>>({\n  user: null,\n  loading: true\n})\n\nexport function AuthProvider({ children }: { children: React.ReactNode }) {\n  const auth = useAuth()\n  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>\n}\n\nexport const useAuthContext = () => useContext(AuthContext)",
+      ".env.local.example": "NEXT_PUBLIC_SUPABASE_URL=your-supabase-url\nNEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key"
+    },
+    "dependencies": {
+      "@supabase/supabase-js": "^2.39.0",
+      "@supabase/auth-helpers-react": "^0.4.2"
+    },
+    "scripts": {
+      "db:types": "supabase gen types typescript --local > lib/database.types.ts"
+    }
+  },
+  "variables": {
+    "SUPABASE_URL": "Your Supabase project URL",
+    "SUPABASE_ANON_KEY": "Your Supabase anon key"
+  },
+  "usage": "1. Copy .env.local.example to .env.local and fill in values\n2. Wrap your app with <AuthProvider>\n3. Use useAuthContext() in components",
+  "learnings": "Supabase auth integrates seamlessly with React. The auth state listener prevents hydration issues."
+}
