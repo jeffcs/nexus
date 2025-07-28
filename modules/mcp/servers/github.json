@@ -1,0 +1,30 @@
+{
+  "name": "github",
+  "description": "Direct GitHub repository access and management",
+  "type": "stdio",
+  "package": "@modelcontextprotocol/server-github",
+  "benefits": [
+    "Direct repository operations without CLI",
+    "Issue and PR management",
+    "Code search across repositories",
+    "Branch and release management"
+  ],
+  "use_cases": [
+    "Creating and managing pull requests",
+    "Searching for code patterns across repos",
+    "Managing issues and projects",
+    "Automating release workflows"
+  ],
+  "config": {
+    "enabled": false,
+    "auth": {
+      "type": "token",
+      "env": "GITHUB_TOKEN"
+    },
+    "scope": ["repo", "workflow"]
+  },
+  "integration": {
+    "agents": ["orchestrator", "sentinel"],
+    "commands": ["pr", "issue", "release"]
+  }
+}
