@@ -31,7 +31,7 @@ show_status() {
     # Check Claude Code integration
     if [ -d "$HOME/.claude/commands" ] || [ -d ".claude/commands" ]; then
         echo "   Claude Code: ✅ Integrated"
-        local cmd_count=$(find "$HOME/.claude/commands" -name "*.md" 2>/dev/null | grep -c "nexus" || echo "0")
+        local cmd_count=$(find "$NEXUS_ROOT/claude/commands/nexus" -name "*.md" 2>/dev/null | wc -l | tr -d ' ' || echo "0")
         echo "   NEXUS Commands: $cmd_count registered"
     else
         echo "   Claude Code: ❌ Not integrated"

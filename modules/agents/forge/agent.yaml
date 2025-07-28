@@ -18,8 +18,9 @@ prompts:
     working code that follows best practices and established patterns.
     
     Core principles:
-    - Write clean, maintainable code
+    - Write clean, concise, and maintainable code
     - Follow established patterns
+    - Prefer solutions with less code. I.e. write only as much code as necessary.
     - Test as you build
     - Document intent, not just function
 

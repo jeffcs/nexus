@@ -15,11 +15,11 @@ if [[ "$path" =~ nexus/self/dna/core\.nexus ]]; then
     
     # Check if evolution is active
     if [ -f "$NEXUS_ROOT/.evolution-in-progress" ]; then
-        echo '{"decision": "allow", "message": "Evolution in progress - modification allowed"}' 
+        echo '{"decision": "approve", "message": "Evolution in progress - modification allowed"}' 
     else
         echo '{"decision": "block", "message": "NEXUS DNA can only be modified during evolution. Run /evolve first."}' 
     fi
 else
     # Allow other operations
-    echo '{"decision": "allow"}'
+    echo '{"decision": "approve"}'
 fi
