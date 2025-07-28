@@ -2,7 +2,7 @@
 # NEXUS Evolution Engine - Enhanced with Claude Code Integration
 
 NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-NEXUS_VERSION="1.0.0"
+NEXUS_VERSION="2.0.0"
 
 # Source common functions if available
 source "$NEXUS_ROOT/self/evolve/lib/common.sh" 2>/dev/null || true
@@ -39,16 +39,33 @@ show_status() {
 }
 
 run_evolution() {
-    local evolution_version="${1:-1.0}"
-    local evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${evolution_version}-synthesis.sh"
+    local evolution_version="${1:-2.0}"
+    local evolution_guidance="${2:-}"
+    
+    # Determine evolution script name based on version
+    local script_name
+    case "$evolution_version" in
+        1.0) script_name="1.0-synthesis" ;;
+        2.0) script_name="2.0-guided" ;;
+        *) script_name="${evolution_version}-evolution" ;;
+    esac
+    
+    local evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${script_name}.sh"
     
     echo "🧬 Initiating system evolution to v${evolution_version}..."
+    if [ -n "$evolution_guidance" ]; then
+        echo "🎯 Guided evolution: $evolution_guidance"
+    fi
     echo ""
     
     # Check if evolution script exists
     if [ ! -f "$evolution_script" ]; then
         echo "⚠️  Evolution script not found. Creating it now..."
-        create_evolution_script "$evolution_version"
+        if [ "$evolution_version" = "2.0" ]; then
+            create_evolution_2_0_script "$evolution_guidance"
+        else
+            create_evolution_script "$evolution_version"
+        fi
     fi
     
     # Check current version
@@ -66,18 +83,69 @@ run_evolution() {
     
     # Execute evolution
     echo "🚀 Applying evolution..."
-    if bash "$evolution_script"; then
+    # Pass guidance as environment variable
+    EVOLUTION_GUIDANCE="$evolution_guidance" bash "$evolution_script"
+    if [ $? -eq 0 ]; then
         echo "✅ Evolution complete!"
         
         # Update version
         update_version "$evolution_version"
         
         # Run post-evolution tasks
-        post_evolution_tasks
+        post_evolution_tasks "$evolution_version"
     else
         echo "❌ Evolution failed. Check the logs for details."
         return 1
     fi
+}
+
+evolve_with_guidance() {
+    # New function for guided evolution
+    local guidance="$1"
+    
+    echo "🤖 AI-Guided Evolution Request"
+    echo "================================"
+    echo ""
+    echo "📋 Guidance: $guidance"
+    echo ""
+    
+    # Create evolution marker
+    touch "$NEXUS_ROOT/.evolution-in-progress"
+    
+    # Generate evolution script based on guidance
+    local evolution_name="custom-$(date +%s)"
+    local evolution_script="$NEXUS_ROOT/self/evolve/evolutions/${evolution_name}.sh"
+    
+    echo "🧠 Analyzing evolution request..."
+    echo "📝 Generating evolution script: $evolution_name"
+    
+    # Create a temporary guidance file for the AI
+    local guidance_file="$NEXUS_ROOT/lab/experiments/evolution-guidance.md"
+    mkdir -p "$(dirname "$guidance_file")"
+    
+    cat > "$guidance_file" << EOF
+# Evolution Guidance
+
+User Request: $guidance
+
+Please analyze this request and create an evolution script that:
+1. Implements the requested changes
+2. Updates any affected commands or configurations
+3. Maintains system consistency
+4. Documents the changes
+
+Current NEXUS version: $(jq -r .version "$NEXUS_ROOT/self/dna/version.json" 2>/dev/null || echo "1.0")
+EOF
+    
+    echo ""
+    echo "🔮 Use /nexus:architect to design the evolution"
+    echo "🛠️  Use /nexus:forge to implement the changes"
+    echo ""
+    echo "📍 Guidance saved to: $guidance_file"
+    echo "📍 Evolution script will be: $evolution_script"
+    
+    # Clean up marker
+    rm -f "$NEXUS_ROOT/.evolution-in-progress"
 }
 
 pre_evolution_checks() {
@@ -102,6 +170,7 @@ pre_evolution_checks() {
 }
 
 post_evolution_tasks() {
+    local version="${1:-2.0}"
     echo ""
     echo "🔧 Running post-evolution tasks..."
     
@@ -113,12 +182,12 @@ post_evolution_tasks() {
     
     # Add evolution entry
     local timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    jq --arg ver "$NEXUS_VERSION" --arg time "$timestamp" \
+    jq --arg ver "$version" --arg time "$timestamp" \
         '.evolutions += [{"version": $ver, "timestamp": $time, "status": "success"}]' \
         "$evolution_log" > "$evolution_log.tmp" && mv "$evolution_log.tmp" "$evolution_log"
     
     # Check Claude Code integration
-    if command -v claude &> /dev/null; then
+    if command -v claude &> /dev/null || [ -d "$HOME/.claude" ]; then
         echo "🔗 Updating Claude Code integration..."
         integrate_claude_code
     fi
@@ -138,50 +207,33 @@ integrate_claude_code() {
     echo "✅ Claude Code integration updated"
 }
 
+create_evolution_2_0_script() {
+    local guidance="${1:-}"
+    local script_path="$NEXUS_ROOT/self/evolve/evolutions/2.0-guided.sh"
+    
+    mkdir -p "$(dirname "$script_path")"
+    
+    # This will be created by the actual evolution implementation
+    echo "#!/bin/bash" > "$script_path"
+    echo "# NEXUS Evolution 2.0 - Guided Evolution" >> "$script_path"
+    echo "# This is a placeholder - run the evolution to generate the actual script" >> "$script_path"
+    echo "echo 'Evolution 2.0 script needs to be implemented'" >> "$script_path"
+    echo "exit 1" >> "$script_path"
+    
+    chmod +x "$script_path"
+}
+
 create_evolution_script() {
     local version="$1"
-    local script_path="$NEXUS_ROOT/self/evolve/evolutions/${version}-synthesis.sh"
+    local script_path="$NEXUS_ROOT/self/evolve/evolutions/${version}-evolution.sh"
     
     mkdir -p "$(dirname "$script_path")"
     
     cat > "$script_path" << 'EOF'
 #!/bin/bash
-# NEXUS Evolution 1.0 - Synthesis
-# This evolution integrates Claude Code and establishes core patterns
-
-NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
-
-echo "🧬 Evolution 1.0: Synthesis"
-echo "=========================="
-echo ""
-
-# Create Claude integration structure
-echo "📁 Creating Claude integration directories..."
-mkdir -p "$NEXUS_ROOT/claude/commands/nexus"
-mkdir -p "$NEXUS_ROOT/claude/settings"
-mkdir -p "$NEXUS_ROOT/claude/hooks"
-
-# Create evolution library directory
-mkdir -p "$NEXUS_ROOT/self/evolve/lib"
-
-# Create factory blueprints
-echo "🏭 Creating project templates..."
-mkdir -p "$NEXUS_ROOT/factory/blueprints/web-app"
-mkdir -p "$NEXUS_ROOT/factory/blueprints/ai-agent"
-mkdir -p "$NEXUS_ROOT/factory/blueprints/microservice"
-
-# Create command primitives
-echo "⚡ Creating command primitives..."
-mkdir -p "$NEXUS_ROOT/modules/commands/primitives"
-
-echo ""
-echo "✅ Evolution 1.0 structure created"
-echo ""
-echo "Next steps:"
-echo "1. Run 'nexus' to see available commands"
-echo "2. Use '/nexus:genesis' in Claude Code to create projects"
-echo "3. Check 'nexus status' to see system state"
-
+# NEXUS Evolution Script
+echo "Generic evolution script for version $version"
+echo "Please implement specific evolution logic"
 exit 0
 EOF
     
@@ -195,7 +247,7 @@ update_version() {
     
     # Update version.json
     jq --arg ver "$new_version" \
-        '.version = $ver | .codename = "Synthesis" | .released = now | .features += ["Claude Code integration", "Evolution system", "Project templates", "Agent slash commands"]' \
+        '.version = $ver | .released = now' \
         "$version_file" > "$version_file.tmp" && mv "$version_file.tmp" "$version_file"
 }
 
@@ -271,14 +323,17 @@ setup_claude_commands() {
         if [ -f "$cmd" ]; then
             local cmd_name=$(basename "$cmd")
             ln -sf "$cmd" "$HOME/.claude/commands/nexus/$cmd_name"
+            echo "   ✓ Linked /nexus:${cmd_name%.md}"
         fi
     done
     
-    # Link root commands
+    # Link root commands - now with nexus: prefix
     for cmd in "$NEXUS_ROOT/claude/commands"/*.md; do
         if [ -f "$cmd" ] && [ "$(basename "$(dirname "$cmd")")" = "commands" ]; then
-            local cmd_name=$(basename "$cmd")
-            ln -sf "$cmd" "$HOME/.claude/commands/$cmd_name"
+            local cmd_name=$(basename "$cmd" .md)
+            # Create nexus: prefixed version
+            ln -sf "$cmd" "$HOME/.claude/commands/nexus:$cmd_name.md"
+            echo "   ✓ Linked /nexus:$cmd_name"
         fi
     done
 }
@@ -294,7 +349,12 @@ setup_claude_settings() {
     # Create or update settings
     if [ -f "$NEXUS_ROOT/claude/settings/nexus-base.json" ]; then
         cp "$NEXUS_ROOT/claude/settings/nexus-base.json" "$project_settings"
+        echo "   ✓ Created project settings"
     fi
+    
+    # Create commands directory in project
+    mkdir -p "$NEXUS_ROOT/.claude/commands"
+    echo "   ✓ Created project commands directory"
 }
 EOF
     chmod +x "$NEXUS_ROOT/self/evolve/lib/claude-integration.sh"
@@ -309,7 +369,13 @@ case "${1:-status}" in
         ;;
     
     upgrade)
-        run_evolution "${2:-1.0}"
+        if [ -n "$2" ] && [[ ! "$2" =~ ^[0-9]+\.[0-9]+$ ]]; then
+            # If second argument is not a version number, treat as guidance
+            evolve_with_guidance "$2"
+        else
+            # Traditional version-based evolution
+            run_evolution "${2:-2.0}" "${3:-}"
+        fi
         ;;
     
     agent)
@@ -325,14 +391,16 @@ case "${1:-status}" in
         echo ""
         echo "Commands:"
         echo "  status              Show system status"
-        echo "  upgrade [version]   Upgrade to specified version (default: 1.0)"
+        echo "  upgrade [version]   Upgrade to specified version (default: 2.0)"
+        echo "  upgrade \"guidance\"  AI-guided evolution with natural language"
         echo "  agent <name>        Create a new agent"
         echo "  rollback [version]  Rollback to previous version"
         echo "  help               Show this help message"
         echo ""
         echo "Examples:"
         echo "  ./evolve.sh status"
-        echo "  ./evolve.sh upgrade 1.0"
+        echo "  ./evolve.sh upgrade 2.0"
+        echo "  ./evolve.sh upgrade \"add logging to all agents\""
         echo "  ./evolve.sh agent analyst"
         ;;
     
