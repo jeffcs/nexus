@@ -23,10 +23,10 @@ AI-driven evolution from natural language requests.
 4. Document changes
 
 ### AI-Generated Evolution
-1. Use `/nexus:evolve "description"`
+1. Use `/nexus/evolve "description"`
 2. System creates guidance file
-3. Use `/nexus:architect` to design
-4. Use `/nexus:forge` to implement
+3. Use `/nexus/architect` to design
+4. Use `/nexus/forge` to implement
 
 ## Evolution Best Practices
 

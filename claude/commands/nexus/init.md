@@ -1,4 +1,4 @@
-# nexus:init
+# nexus/init
 
 Initialize or update NEXUS in the current project directory.
 
@@ -29,8 +29,8 @@ The initialization process will:
 
 ```bash
 # In your project directory
-/nexus:init
+/nexus/init
 
 # Force update
-/nexus:init --force
+/nexus/init --force
 ```

@@ -174,11 +174,11 @@ This project is enhanced with NEXUS - Neural Execution & eXperimentation Unified
 
 ## Available Commands
 
-- \`/nexus:help\` - Show available commands
-- \`/nexus:spec\` - Create a new specification
-- \`/nexus:genesis\` - Bootstrap new components
-- \`/nexus:architect\` - Design system architecture
-- \`/nexus:forge\` - Generate code from specs
+- \`/nexus/help\` - Show available commands
+- \`/nexus/spec\` - Create a new specification
+- \`/nexus/genesis\` - Bootstrap new components
+- \`/nexus/architect\` - Design system architecture
+- \`/nexus/forge\` - Generate code from specs
 
 ## Project Structure
 
@@ -214,7 +214,7 @@ echo -e "${GREEN}✅ NEXUS successfully initialized!${NC}"
 echo ""
 echo "📚 Next steps:"
 echo "   1. Review .nexus/README.md for usage"
-echo "   2. Try /nexus:help to see available commands"
-echo "   3. Use /nexus:spec to create your first specification"
+echo "   2. Try /nexus/help to see available commands"
+echo "   3. Use /nexus/spec to create your first specification"
 echo ""
 echo "🚀 Happy building with NEXUS!"
