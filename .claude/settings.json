@@ -1,7 +1,7 @@
 {
   "env": {
-    "NEXUS_ROOT": "${workspaceFolder}/nexus",
-    "NEXUS_VERSION": "2.0.0",
+    "NEXUS_ROOT": "/Users/jeff/work/nexus",
+    "NEXUS_VERSION": "3.0.0",
     "NEXUS_AGENT_MODE": "collaborative",
     "NEXUS_EVOLUTION_MODE": "guided"
   },
@@ -10,34 +10,34 @@
       "matcher": "nexus|agent|evolve",
       "hooks": [{
         "type": "command",
-        "command": "${NEXUS_ROOT}/claude/hooks/prompt-enhancer.sh"
+        "command": "/Users/jeff/work/nexus/claude/hooks/prompt-enhancer.sh"
       }]
     }],
     "PreToolUse": [{
       "matcher": "Edit|Write",
       "hooks": [{
         "type": "command",
-        "command": "${NEXUS_ROOT}/claude/hooks/pre-tool-validator.sh"
+        "command": "/Users/jeff/work/nexus/claude/hooks/pre-tool-validator.sh"
       }]
     }],
     "PostToolUse": [{
       "matcher": ".*",
       "hooks": [{
         "type": "command",
-        "command": "${NEXUS_ROOT}/claude/hooks/post-tool-logger.sh"
+        "command": "/Users/jeff/work/nexus/claude/hooks/post-tool-logger.sh"
       }]
     }]
   },
   "permissions": {
-    "allow": ["Bash", "Edit", "Read", "Write", "Glob", "Grep", "WebFetch"],
+    "allow": ["Bash", "Edit", "Read", "Write", "Glob", "Grep", "WebFetch", "Task"],
     "customTools": {
       "nexus": {
-        "command": "${NEXUS_ROOT}/nexus",
+        "command": "/Users/jeff/work/nexus/nexus",
         "description": "Run NEXUS commands",
         "allowed": true
       },
       "evolve": {
-        "command": "${NEXUS_ROOT}/self/evolve/evolve.sh",
+        "command": "/Users/jeff/work/nexus/self/evolve/evolve.sh",
         "description": "Run NEXUS evolution",
         "allowed": true
       }

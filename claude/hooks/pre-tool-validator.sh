@@ -1,6 +1,9 @@
 #!/bin/bash
 # NEXUS Pre-Tool Validator
 
+# Find NEXUS root relative to this script
+NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
 # Read the input JSON
 input=$(cat)
 tool=$(echo "$input" | jq -r '.tool // ""')

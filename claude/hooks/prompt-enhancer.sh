@@ -1,6 +1,9 @@
 #!/bin/bash
 # NEXUS Prompt Enhancer Hook
 
+# Find NEXUS root relative to this script
+NEXUS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
 # Read the input JSON
 input=$(cat)
 prompt=$(echo "$input" | jq -r '.prompt // ""')
