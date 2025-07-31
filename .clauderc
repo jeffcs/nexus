@@ -1,0 +1,13 @@
+# Claude Code Configuration
+# Nexus V2 Agent System
+
+# Include all agent definitions
+include .nexus/agents/*.md
+
+# Include project context
+include .nexus/context/*.md
+
+# Include usage documentation
+include .nexus/nexus.md
+
+# Project-specific patterns are loaded dynamically
