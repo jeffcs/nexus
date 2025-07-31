@@ -152,38 +152,62 @@ Agents understand:
 After installation, your project will have:
 
 ```
-.nexus/
-├── agents/          # Agent definitions (copied from source)
-├── patterns/        # Pattern libraries (copied from source)
-├── context/         # Your project context (customizable)
-└── nexus.md        # Usage guide
+.claude/
+├── agents/          # Nexus agent definitions
+└── settings.json    # Claude Code configuration
 
-Source files (in this repo):
-├── agents/          # Agent source definitions
-├── patterns/        # Pattern examples
-└── context/         # Context templates
+nexus-context/       # Your project context (customizable)
+├── project.md       # Project understanding
+├── decisions.md     # Decision log
+└── ideals.md        # Project principles
+
+nexus-patterns/      # Agent-specific patterns
+├── product.md       # Product patterns
+├── designer.md      # Design patterns
+├── architect.md     # Architecture patterns
+├── developer.md     # Code patterns
+└── technician.md    # Operations patterns
+
+nexus-guide.md       # Usage documentation
+CLAUDE.md           # Project instructions
 ```
 
 ## Customization
 
 ### Project Ideals
-Edit `.nexus/context/ideals.md` to define your project's:
+Edit `nexus-context/ideals.md` to define your project's:
 - Core values
 - Development principles
 - Quality standards
 - Team philosophy
 
 ### Decision Log
-Document important decisions in `.nexus/context/decisions.md`:
+Document important decisions in `nexus-context/decisions.md`:
 - Architectural choices
 - Technology selections
 - Design decisions
 - Process changes
 
+### Pattern Library
+Extend patterns in `nexus-patterns/[agent].md`:
+- Add successful patterns as you discover them
+- Share patterns with your team
+- Build a knowledge base over time
+
 ## Integration
 
 ### With Claude Code
-Nexus V2 integrates seamlessly with Claude Code. The agents are automatically available in your Claude Code sessions.
+Nexus V2 uses Claude Code's official subagent system:
+- Agents are defined in `.claude/agents/`
+- Automatically loaded when Claude Code starts
+- Natural language activation based on context
+- Full access to Claude Code tools
+
+### Configuration
+The system uses Claude Code's `settings.json`:
+- Project settings: `.claude/settings.json`
+- Local settings: `.claude/settings.local.json` (gitignored)
+- See [Claude Code settings documentation](https://docs.anthropic.com/en/docs/claude-code/settings)
 
 ### With Your Workflow
 - Use during planning sessions

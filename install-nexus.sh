@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 # Configuration
 NEXUS_VERSION="2.0.0"
 NEXUS_REPO="https://github.com/nexus-framework/nexus-v2"
-NEXUS_DIR=".nexus"
+CLAUDE_DIR=".claude"
 SOURCE_ROOT="$(pwd)"
 
 # Helper functions
@@ -53,25 +53,24 @@ check_git_repo() {
 
 # Check if Nexus is already installed
 check_existing_installation() {
-    if [ -d "$NEXUS_DIR" ]; then
-        print_warning "Nexus directory already exists!"
-        read -p "Overwrite existing installation? (y/N) " -n 1 -r
+    if [ -d "$CLAUDE_DIR/agents" ]; then
+        print_warning "Claude agents already exist!"
+        read -p "Overwrite existing agents? (y/N) " -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
             print_info "Installation cancelled"
             exit 0
         fi
-        rm -rf "$NEXUS_DIR"
     fi
 }
 
 # Create directory structure
 create_directory_structure() {
-    print_header "Creating Nexus Directory Structure"
+    print_header "Creating Claude Directory Structure"
     
-    mkdir -p "$NEXUS_DIR"
+    mkdir -p "$CLAUDE_DIR/agents"
     
-    print_success "Created .nexus directory"
+    print_success "Created Claude directory structure"
 }
 
 # Download or copy agent files
@@ -83,18 +82,16 @@ install_agents() {
     
     if [ -d "$SCRIPT_DIR/agents" ]; then
         # Copy from local installation
-        mkdir -p "$NEXUS_DIR/agents"
-        cp -r "$SCRIPT_DIR/agents/"* "$NEXUS_DIR/agents/"
+        cp -r "$SCRIPT_DIR/agents/"* "$CLAUDE_DIR/agents/"
         print_success "Copied agents from local installation"
     else
         # Download from repository
         print_info "Downloading agents from repository..."
-        mkdir -p "$NEXUS_DIR/agents"
         
         # Download each agent
         for agent in product designer architect developer technician; do
             curl -sL "$NEXUS_REPO/raw/main/agents/$agent.md" \
-                -o "$NEXUS_DIR/agents/$agent.md" || {
+                -o "$CLAUDE_DIR/agents/$agent.md" || {
                 print_error "Failed to download $agent agent"
                 exit 1
             }
@@ -109,16 +106,17 @@ install_context_files() {
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
+    # Create nexus-context directory for project context
+    mkdir -p "nexus-context"
+    
     if [ -d "$SCRIPT_DIR/context" ]; then
-        mkdir -p "$NEXUS_DIR/context"
-        cp -r "$SCRIPT_DIR/context/"* "$NEXUS_DIR/context/"
+        cp -r "$SCRIPT_DIR/context/"* "nexus-context/"
         print_success "Copied context files from local installation"
     else
         # Download from repository
-        mkdir -p "$NEXUS_DIR/context"
         for file in project decisions ideals; do
             curl -sL "$NEXUS_REPO/raw/main/context/$file.md" \
-                -o "$NEXUS_DIR/context/$file.md" || {
+                -o "nexus-context/$file.md" || {
                 print_error "Failed to download $file.md"
                 exit 1
             }
@@ -133,17 +131,18 @@ install_pattern_examples() {
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
+    # Create nexus-patterns directory
+    mkdir -p "nexus-patterns"
+    
     if [ -d "$SCRIPT_DIR/patterns" ]; then
         # Copy pattern files
-        mkdir -p "$NEXUS_DIR/patterns"
-        cp -r "$SCRIPT_DIR/patterns/"* "$NEXUS_DIR/patterns/"
+        cp -r "$SCRIPT_DIR/patterns/"* "nexus-patterns/"
         print_success "Copied pattern examples from local installation"
     else
         # Download from repository
-        mkdir -p "$NEXUS_DIR/patterns"
         for agent in product designer architect developer technician; do
             curl -sL "$NEXUS_REPO/raw/main/patterns/$agent.md" \
-                -o "$NEXUS_DIR/patterns/$agent.md" || {
+                -o "nexus-patterns/$agent.md" || {
                 print_warning "No patterns for $agent agent yet"
             }
         done
@@ -159,11 +158,11 @@ install_documentation() {
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
     if [ -f "$SCRIPT_DIR/nexus.md" ]; then
-        cp "$SCRIPT_DIR/nexus.md" "$NEXUS_DIR/"
+        cp "$SCRIPT_DIR/nexus.md" "nexus-guide.md"
         print_success "Installed Nexus documentation"
     else
         curl -sL "$NEXUS_REPO/raw/main/nexus.md" \
-            -o "$NEXUS_DIR/nexus.md" || {
+            -o "nexus-guide.md" || {
             print_error "Failed to download documentation"
             exit 1
         }
@@ -171,44 +170,29 @@ install_documentation() {
     fi
 }
 
-# Create or update .clauderc file
-setup_claude_config() {
-    print_header "Configuring Claude Code"
+# Create Claude settings file
+setup_claude_settings() {
+    print_header "Configuring Claude Code Settings"
     
-    CLAUDE_CONFIG=".clauderc"
-    
-    if [ -f "$CLAUDE_CONFIG" ]; then
-        # Check if Nexus is already configured
-        if grep -q "nexus/agents" "$CLAUDE_CONFIG"; then
-            print_info "Claude Code already configured for Nexus"
-        else
-            print_warning "Updating existing .clauderc file"
-            # Add Nexus configuration
-            echo "" >> "$CLAUDE_CONFIG"
-            echo "# Nexus V2 Agent System" >> "$CLAUDE_CONFIG"
-            echo "include .nexus/agents/*.md" >> "$CLAUDE_CONFIG"
-            echo "include .nexus/context/*.md" >> "$CLAUDE_CONFIG"
-            echo "include .nexus/nexus.md" >> "$CLAUDE_CONFIG"
-            print_success "Updated Claude Code configuration"
-        fi
+    # Check if settings.json already exists
+    if [ -f "$CLAUDE_DIR/settings.json" ]; then
+        print_info "Claude settings already exist - preserving existing configuration"
     else
-        # Create new configuration
-        cat > "$CLAUDE_CONFIG" << 'EOF'
-# Claude Code Configuration
-# Nexus V2 Agent System
-
-# Include all agent definitions
-include .nexus/agents/*.md
-
-# Include project context
-include .nexus/context/*.md
-
-# Include usage documentation
-include .nexus/nexus.md
-
-# Project-specific patterns are loaded dynamically
+        # Create new settings file
+        cat > "$CLAUDE_DIR/settings.json" << 'EOF'
+{
+  "env": {
+    "NEXUS_VERSION": "2.0"
+  }
+}
 EOF
-        print_success "Created Claude Code configuration"
+        print_success "Created Claude settings file"
+    fi
+    
+    # Create .gitignore for local settings
+    if [ ! -f "$CLAUDE_DIR/.gitignore" ]; then
+        echo "settings.local.json" > "$CLAUDE_DIR/.gitignore"
+        print_success "Created .claude/.gitignore"
     fi
 }
 
@@ -221,15 +205,32 @@ setup_claude_md() {
 
 ## Nexus V2 Integration
 
-This project uses the Nexus V2 agent system. The specialized agents are:
+This project uses the Nexus V2 agent system. The specialized agents are available as subagents:
 
-- **Designer Agent**: UI/UX design and product management
-- **Architect Agent**: System design and technical architecture
-- **Developer Agent**: Implementation and coding
-- **Technician Agent**: Debugging and DevOps
-- **Discovery Agent**: Research and exploration
+- **product**: Product strategy, research, and validation
+- **designer**: UI/UX design and user experience
+- **architect**: System design and technical architecture
+- **developer**: Implementation and coding
+- **technician**: Debugging, DevOps, and operations
 
-Refer to `.nexus/nexus.md` for detailed usage instructions.
+Agents are defined in `.claude/agents/` and will be automatically available in Claude Code.
+
+## Usage
+
+The agents will activate automatically based on your requests. Examples:
+- "Research best practices for authentication"
+- "Design a user profile page"
+- "Architect a real-time messaging system"
+- "Implement the login feature"
+- "Debug the slow API response"
+
+## Project Context
+
+Project-specific context is maintained in:
+- `nexus-context/` - Project understanding and decisions
+- `nexus-patterns/` - Reusable patterns for each agent
+
+Refer to `nexus-guide.md` for detailed usage instructions.
 
 ## Project-Specific Instructions
 
@@ -247,11 +248,11 @@ update_gitignore() {
         touch .gitignore
     fi
     
-    # Check if Nexus patterns are already ignored
-    if ! grep -q "\.nexus" ".gitignore"; then
+    # Check if Claude local settings are already ignored
+    if ! grep -q "\.claude/settings\.local\.json" ".gitignore"; then
         echo "" >> .gitignore
-        echo "# Nexus V2 (local project context)" >> .gitignore
-        echo ".nexus/" >> .gitignore
+        echo "# Claude Code local settings" >> .gitignore
+        echo ".claude/settings.local.json" >> .gitignore
         print_success "Updated .gitignore"
     else
         print_info ".gitignore already configured"
@@ -265,19 +266,20 @@ show_next_steps() {
     echo "Nexus V2 has been successfully installed in your project."
     echo ""
     echo "Next steps:"
-    echo "1. Review the agents in ${BLUE}.nexus/agents/${NC}"
-    echo "2. Read the usage guide in ${BLUE}.nexus/nexus.md${NC}"
-    echo "3. Customize ${BLUE}.nexus/context/ideals.md${NC} for your project"
-    echo "4. Start using agents with natural language triggers:"
+    echo "1. Restart Claude Code to load the new agents"
+    echo "2. Review the agents in ${BLUE}.claude/agents/${NC}"
+    echo "3. Read the usage guide in ${BLUE}nexus-guide.md${NC}"
+    echo "4. Customize ${BLUE}nexus-context/ideals.md${NC} for your project"
+    echo "5. Start using agents with natural language:"
     echo ""
     echo "   ${GREEN}Examples:${NC}"
-    echo "   - \"Design a user authentication flow\""
+    echo "   - \"Research user authentication best practices\""
+    echo "   - \"Design a user profile page\""
     echo "   - \"How should we architect the payment system?\""
     echo "   - \"Implement the shopping cart feature\""
     echo "   - \"Debug the slow API response\""
-    echo "   - \"Research best practices for caching\""
     echo ""
-    echo "For more information, see ${BLUE}.nexus/nexus.md${NC}"
+    echo "For more information, see ${BLUE}nexus-guide.md${NC}"
     echo ""
     print_success "Happy coding with Nexus V2! 🚀"
 }
@@ -299,7 +301,7 @@ main() {
     install_context_files
     install_pattern_examples
     install_documentation
-    setup_claude_config
+    setup_claude_settings
     setup_claude_md
     update_gitignore
     
