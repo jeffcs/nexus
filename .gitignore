@@ -49,3 +49,7 @@ lab/prototypes/tmp/
 
 # Generated files
 *.generated.*
+
+# Nexus V2
+.nexus/learning/
+.nexus/patterns/**/*.json
