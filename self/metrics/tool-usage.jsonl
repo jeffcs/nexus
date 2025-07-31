@@ -1264,3 +1264,10 @@
   "result_type": "object",
   "result_size": "68"
 }
+{
+  "timestamp": "2025-07-31T20:02:14Z",
+  "tool": "Bash",
+  "parameters": "{\"command\":\"git stash\",\"description\":\"Stash local changes\"}",
+  "result_type": "object",
+  "result_size": "104"
+}
