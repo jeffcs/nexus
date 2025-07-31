@@ -34,10 +34,10 @@ test_directory_structure() {
     print_test "Directory Structure"
     
     directories=(
-        ".nexus"
-        ".nexus/agents"
-        ".nexus/patterns"
-        ".nexus/context"
+        ".claude"
+        ".claude/agents"
+        "nexus-context"
+        "nexus-patterns"
     )
     
     for dir in "${directories[@]}"; do
@@ -64,7 +64,7 @@ test_agent_files() {
     
     for agent in "${agents[@]}"; do
         ((TESTS++))
-        if [ -f ".nexus/agents/$agent.md" ]; then
+        if [ -f ".claude/agents/$agent.md" ]; then
             print_pass "$agent agent installed"
         else
             print_fail "$agent agent missing"
@@ -84,7 +84,7 @@ test_context_files() {
     
     for file in "${files[@]}"; do
         ((TESTS++))
-        if [ -f ".nexus/context/$file.md" ]; then
+        if [ -f "nexus-context/$file.md" ]; then
             print_pass "$file.md exists"
         else
             print_fail "$file.md missing"
@@ -97,10 +97,10 @@ test_documentation() {
     print_test "Documentation"
     
     ((TESTS++))
-    if [ -f ".nexus/nexus.md" ]; then
-        print_pass "nexus.md documentation exists"
+    if [ -f "nexus-guide.md" ]; then
+        print_pass "nexus-guide.md documentation exists"
     else
-        print_fail "nexus.md documentation missing"
+        print_fail "nexus-guide.md documentation missing"
     fi
 }
 
@@ -109,14 +109,21 @@ test_configuration() {
     print_test "Configuration Files"
     
     ((TESTS++))
-    if [ -f ".clauderc" ] || [ -f "CLAUDE.md" ]; then
-        print_pass "Claude configuration exists"
+    if [ -f ".claude/settings.json" ]; then
+        print_pass "Claude settings.json exists"
     else
-        print_fail "Claude configuration missing"
+        print_fail "Claude settings.json missing"
     fi
     
     ((TESTS++))
-    if [ -f ".gitignore" ] && grep -q "\.nexus" ".gitignore"; then
+    if [ -f "CLAUDE.md" ]; then
+        print_pass "CLAUDE.md exists"
+    else
+        print_fail "CLAUDE.md missing"
+    fi
+    
+    ((TESTS++))
+    if [ -f ".gitignore" ] && grep -q "\.claude/settings\.local\.json" ".gitignore"; then
         print_pass ".gitignore configured correctly"
     else
         print_fail ".gitignore not configured"
@@ -139,7 +146,7 @@ test_agent_content() {
     for agent in "${agents[@]}"; do
         ((TESTS++))
         
-        if [ -f ".nexus/agents/$agent.md" ] && grep -q "^name: $agent" ".nexus/agents/$agent.md"; then
+        if [ -f ".claude/agents/$agent.md" ] && grep -q "^name: $agent" ".claude/agents/$agent.md"; then
             print_pass "$agent has valid frontmatter"
         else
             print_fail "$agent frontmatter missing or invalid"
@@ -161,7 +168,7 @@ test_patterns() {
     
     for agent in "${agents[@]}"; do
         ((TESTS++))
-        if [ -f ".nexus/patterns/$agent.md" ]; then
+        if [ -f "nexus-patterns/$agent.md" ]; then
             print_pass "$agent patterns file exists"
         else
             print_fail "$agent patterns file missing"
@@ -196,8 +203,8 @@ main() {
     echo -e "${BLUE}Nexus V2 Installation Test${NC}"
     echo -e "${BLUE}===========================${NC}"
     
-    if [ ! -d ".nexus" ]; then
-        echo -e "${RED}Error: .nexus directory not found!${NC}"
+    if [ ! -d ".claude" ]; then
+        echo -e "${RED}Error: .claude directory not found!${NC}"
         echo "Please run the installation script first:"
         echo "  ./install-nexus.sh"
         exit 1

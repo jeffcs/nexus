@@ -1,25 +1,44 @@
-# Project Instructions for Claude Code
+# Nexus V2 Framework Development
 
-## Nexus V2 Integration
+## About This Repository
 
-This project uses the Nexus V2 agent system. The specialized agents are:
+This is the source code for the Nexus V2 agent framework for Claude Code. The framework provides five specialized AI agents that work together to help developers build better software.
 
-- **Designer Agent**: UI/UX design and product management
-- **Architect Agent**: System design and technical architecture
-- **Developer Agent**: Implementation and coding
-- **Technician Agent**: Debugging and DevOps
-- **Discovery Agent**: Research and exploration
+## Development Guidelines
 
-Refer to `.nexus/nexus.md` for detailed usage instructions.
+When working on this codebase:
 
-## Project-Specific Instructions
+1. **Agent Quality**: Maintain exemplary agent definitions that showcase best practices
+2. **Pattern Library**: Keep patterns concise, practical, and reusable
+3. **Installation**: Ensure the installation process remains simple and reliable
+4. **Documentation**: Keep all documentation clear and up-to-date
+5. **Testing**: Run `./test-nexus.sh` to validate changes
 
-This is the Nexus V2 framework repository itself. When working on this codebase:
+## Project Structure
 
-1. Maintain the high quality of agent definitions
-2. Ensure patterns are well-documented and reusable
-3. Keep the installation process simple and reliable
-4. Test all changes thoroughly
-5. Document any new features or patterns
+```
+agents/          # Source agent definitions
+patterns/        # Pattern examples for each agent
+context/         # Context templates for projects
+install-nexus.sh # Installation script
+test-nexus.sh    # Test suite
+nexus.md        # User guide
+```
 
-The agents should exemplify best practices in their respective domains.
+## The Agents
+
+- **product**: Product strategy, research, and validation
+- **designer**: UI/UX design and user experience
+- **architect**: System design and technical architecture
+- **developer**: Implementation and coding
+- **technician**: Debugging, DevOps, and operations
+
+## Making Changes
+
+1. Edit agent definitions in `agents/[agent].md`
+2. Update patterns in `patterns/[agent].md`
+3. Test with `./test-nexus.sh`
+4. Update documentation as needed
+5. Create PR with clear description
+
+Remember: This framework should exemplify the best practices it promotes.

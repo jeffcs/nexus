@@ -70,15 +70,19 @@ Agents work together naturally. For complex tasks, they'll collaborate:
 
 ## Patterns
 
-Each agent maintains patterns in `.nexus/patterns/[agent].md` that capture successful approaches. These grow over time as you use the system.
+Each agent maintains patterns in `nexus-patterns/[agent].md` that capture successful approaches. These grow over time as you use the system.
 
 ## Customization
 
-Edit files in `.nexus/context/` to customize:
+Edit files in `nexus-context/` to customize:
 - `ideals.md` - Your project's values and principles
 - `decisions.md` - Track important decisions
 - `project.md` - Current project state
 
+## Claude Code Integration
+
+Nexus agents are installed as Claude Code subagents in `.claude/agents/`. They activate automatically based on your natural language requests.
+
 ---
 
-*For more details, see the individual agent files in `.nexus/agents/`*
+*For more details, see the individual agent files in `.claude/agents/`*
