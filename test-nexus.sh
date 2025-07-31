@@ -37,12 +37,7 @@ test_directory_structure() {
         ".nexus"
         ".nexus/agents"
         ".nexus/patterns"
-        ".nexus/patterns/design"
-        ".nexus/patterns/architecture"
-        ".nexus/patterns/code"
-        ".nexus/patterns/operations"
         ".nexus/context"
-        ".nexus/learning"
     )
     
     for dir in "${directories[@]}"; do
@@ -60,11 +55,11 @@ test_agent_files() {
     print_test "Agent Files"
     
     agents=(
+        "product"
         "designer"
         "architect"
         "developer"
         "technician"
-        "discovery"
     )
     
     for agent in "${agents[@]}"; do
@@ -121,7 +116,7 @@ test_configuration() {
     fi
     
     ((TESTS++))
-    if [ -f ".gitignore" ] && grep -q "\.nexus/learning/" ".gitignore"; then
+    if [ -f ".gitignore" ] && grep -q "\.nexus" ".gitignore"; then
         print_pass ".gitignore configured correctly"
     else
         print_fail ".gitignore not configured"
@@ -132,24 +127,22 @@ test_configuration() {
 test_agent_content() {
     print_test "Agent Content Validation"
     
-    # Check if agents have proper structure
+    # Check if agents have proper YAML frontmatter
     agents=(
-        "designer:Product Manager + Designer + UI/UX Engineer"
-        "architect:System Designer + Technical Strategist"
-        "developer:Builder + Analyst + Integrator"
-        "technician:Debugger + DevOps + Production Specialist"
-        "discovery:Researcher + Technology Scout"
+        "product"
+        "designer"
+        "architect"
+        "developer"
+        "technician"
     )
     
-    for agent_info in "${agents[@]}"; do
+    for agent in "${agents[@]}"; do
         ((TESTS++))
-        agent="${agent_info%%:*}"
-        role="${agent_info#*:}"
         
-        if grep -q "$role" ".nexus/agents/$agent.md" 2>/dev/null; then
-            print_pass "$agent has correct role definition"
+        if [ -f ".nexus/agents/$agent.md" ] && grep -q "^name: $agent" ".nexus/agents/$agent.md"; then
+            print_pass "$agent has valid frontmatter"
         else
-            print_fail "$agent role definition incorrect or missing"
+            print_fail "$agent frontmatter missing or invalid"
         fi
     done
 }
@@ -158,26 +151,24 @@ test_agent_content() {
 test_patterns() {
     print_test "Pattern System"
     
-    ((TESTS++))
-    pattern_count=$(find .nexus/patterns -name "*.md" -type f 2>/dev/null | wc -l)
-    if [ "$pattern_count" -gt 0 ]; then
-        print_pass "Found $pattern_count pattern files"
-    else
-        print_pass "Pattern directories ready (patterns created through usage)"
-    fi
+    agents=(
+        "product"
+        "designer"
+        "architect"
+        "developer"
+        "technician"
+    )
+    
+    for agent in "${agents[@]}"; do
+        ((TESTS++))
+        if [ -f ".nexus/patterns/$agent.md" ]; then
+            print_pass "$agent patterns file exists"
+        else
+            print_fail "$agent patterns file missing"
+        fi
+    done
 }
 
-# Test learning system
-test_learning_system() {
-    print_test "Learning System"
-    
-    ((TESTS++))
-    if [ -f ".nexus/learning/pattern-recognizer.ts" ]; then
-        print_pass "Pattern recognizer installed"
-    else
-        print_pass "Pattern recognizer will be installed on demand"
-    fi
-}
 
 # Summary
 print_summary() {
@@ -219,7 +210,6 @@ main() {
     test_configuration
     test_agent_content
     test_patterns
-    test_learning_system
     
     print_summary
 }

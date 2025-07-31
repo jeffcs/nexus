@@ -4,13 +4,13 @@
 
 ## What is Nexus V2?
 
-Nexus V2 is an intelligent agent system for Claude Code that provides five specialized agents, each excelling in their domain:
+Nexus V2 is a specialized agent system for Claude Code that provides five expert agents working together:
 
-- **👨‍🎨 Designer Agent** - Product management and UI/UX design
+- **📊 Product Agent** - Product strategy, research, and validation
+- **🎨 Designer Agent** - UI/UX design and user experience
 - **🏗️ Architect Agent** - System design and technical architecture
 - **💻 Developer Agent** - Implementation and coding excellence
-- **🔧 Technician Agent** - Debugging, DevOps, and production operations
-- **🔍 Discovery Agent** - Research and technology exploration
+- **🔧 Technician Agent** - Debugging, DevOps, and operations
 
 ## Why Nexus V2?
 
@@ -18,9 +18,9 @@ Traditional AI assistants try to do everything, resulting in shallow knowledge a
 
 - **Deep Specialization**: Each agent is an expert in their field
 - **Natural Collaboration**: Agents work together like a real team
-- **Continuous Learning**: The system learns from your project and improves over time
+- **Pattern Library**: Pre-built patterns that grow with usage
 - **Zero Configuration**: Works immediately with natural language
-- **Pattern Recognition**: Captures and reuses successful patterns
+- **Claude Code Native**: Built specifically for Claude Code sub-agents
 
 ## Quick Start
 
@@ -57,12 +57,25 @@ The appropriate agent will automatically activate and help you.
 
 ## Agent Capabilities
 
-### Designer Agent 👨‍🎨
+### Product Agent 📊
+- Product strategy and roadmaps
+- Market and user research
+- Feature prioritization
+- Competitive analysis
+- Idea validation
+
+**Activation examples:**
+- "Research best practices for..."
+- "What features should we build for..."
+- "Analyze the market for..."
+- "Is it worth building..."
+
+### Designer Agent 🎨
 - User experience design
-- Product strategy
 - Interface design
 - Accessibility standards
 - Design systems
+- User flows
 
 **Activation examples:**
 - "Design a solution for..."
@@ -107,18 +120,6 @@ The appropriate agent will automatically activate and help you.
 - "Fix production issue..."
 - "Optimize performance..."
 
-### Discovery Agent 🔍
-- Technology research
-- Best practice discovery
-- Tool evaluation
-- Competitive analysis
-- Feasibility studies
-
-**Activation examples:**
-- "Research..."
-- "Find the best way to..."
-- "Explore options for..."
-- "What are alternatives to..."
 
 ## Advanced Features
 
@@ -129,13 +130,14 @@ Request multiple agents to work together:
 "Designer and Architect: collaborate on a file upload feature"
 ```
 
-### Pattern Learning
+### Pattern System
 
-The system automatically learns from your usage:
-- Recognizes successful patterns
-- Adapts to your coding style
-- Improves recommendations over time
-- Stores patterns for reuse
+Each agent maintains their own pattern library:
+- Product patterns for research and validation
+- Design patterns for UI/UX
+- Architecture patterns for systems
+- Developer patterns for code
+- Technician patterns for operations
 
 ### Context Awareness
 
@@ -151,23 +153,15 @@ After installation, your project will have:
 
 ```
 .nexus/
-├── agents/
-│   ├── designer.md      # Designer agent definition
-│   ├── architect.md     # Architect agent definition
-│   ├── developer.md     # Developer agent definition
-│   ├── technician.md    # Technician agent definition
-│   └── discovery.md     # Discovery agent definition
-├── patterns/
-│   ├── design/         # UI/UX patterns
-│   ├── architecture/   # System patterns
-│   ├── code/          # Code patterns
-│   └── operations/    # DevOps patterns
-├── context/
-│   ├── project.md     # Project understanding
-│   ├── decisions.md   # Decision history
-│   └── ideals.md      # Project principles
-├── learning/          # Learning system
-└── nexus.md          # Usage guide
+├── agents/          # Agent definitions (copied from source)
+├── patterns/        # Pattern libraries (copied from source)
+├── context/         # Your project context (customizable)
+└── nexus.md        # Usage guide
+
+Source files (in this repo):
+├── agents/          # Agent source definitions
+├── patterns/        # Pattern examples
+└── context/         # Context templates
 ```
 
 ## Customization
@@ -203,7 +197,7 @@ Nexus V2 integrates seamlessly with Claude Code. The agents are automatically av
 ```
 You: "I need to add user notifications"
 
-Discovery: [researches notification patterns]
+Product: [researches user needs and solutions]
 Designer: [creates UX flow]
 Architect: [designs system architecture]
 Developer: [implements the feature]
