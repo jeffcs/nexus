@@ -1,46 +1,17 @@
 {
-  "env": {
-    "NEXUS_ROOT": "/Users/jeff/work/nexus",
-    "NEXUS_VERSION": "3.0.0",
-    "NEXUS_AGENT_MODE": "collaborative",
-    "NEXUS_EVOLUTION_MODE": "guided"
-  },
-  "hooks": {
-    "UserPromptSubmit": [{
-      "matcher": "nexus|agent|evolve",
-      "hooks": [{
-        "type": "command",
-        "command": "/Users/jeff/work/nexus/claude/hooks/prompt-enhancer.sh"
-      }]
-    }],
-    "PreToolUse": [{
-      "matcher": "Edit|Write",
-      "hooks": [{
-        "type": "command",
-        "command": "/Users/jeff/work/nexus/claude/hooks/pre-tool-validator.sh"
-      }]
-    }],
-    "PostToolUse": [{
-      "matcher": ".*",
-      "hooks": [{
-        "type": "command",
-        "command": "/Users/jeff/work/nexus/claude/hooks/post-tool-logger.sh"
-      }]
-    }]
-  },
+  "env": {},
+  "hooks": {},
   "permissions": {
-    "allow": ["Bash", "Edit", "Read", "Write", "Glob", "Grep", "WebFetch", "Task"],
-    "customTools": {
-      "nexus": {
-        "command": "/Users/jeff/work/nexus/nexus",
-        "description": "Run NEXUS commands",
-        "allowed": true
-      },
-      "evolve": {
-        "command": "/Users/jeff/work/nexus/self/evolve/evolve.sh",
-        "description": "Run NEXUS evolution",
-        "allowed": true
-      }
-    }
+    "allow": [
+      "Bash",
+      "Edit",
+      "Read",
+      "Write",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "Task"
+    ],
+    "customTools": {}
   }
 }

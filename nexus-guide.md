@@ -68,22 +68,13 @@ Agents work together naturally. For complex tasks, they'll collaborate:
 3. **Be Specific**: Provide context and constraints
 4. **Trust Expertise**: Let each agent excel in their domain
 
-## Teaching Agents
-
-Use the teacher agent to add new patterns:
-```
-"teach product agent to use tldraw for mockups"
-"teach architect to prefer Python for backend services"
-"teach designer to always consider accessibility"
-```
-
 ## Patterns
 
-Each agent maintains patterns in `.nexus/patterns/[agent].md` that capture successful approaches. These grow over time through teaching and usage.
+Each agent maintains patterns in `nexus-patterns/[agent].md` that capture successful approaches. These grow over time as you use the system.
 
 ## Customization
 
-Edit files in `.nexus/context/` to customize:
+Edit files in `nexus-context/` to customize:
 - `ideals.md` - Your project's values and principles
 - `decisions.md` - Track important decisions
 - `project.md` - Current project state

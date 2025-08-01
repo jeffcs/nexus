@@ -89,7 +89,7 @@ install_agents() {
         print_info "Downloading agents from repository..."
         
         # Download each agent
-        for agent in product designer architect developer technician; do
+        for agent in product designer architect developer technician teacher; do
             curl -sL "$NEXUS_REPO/raw/main/agents/$agent.md" \
                 -o "$CLAUDE_DIR/agents/$agent.md" || {
                 print_error "Failed to download $agent agent"
@@ -106,17 +106,17 @@ install_context_files() {
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
-    # Create nexus-context directory for project context
-    mkdir -p "nexus-context"
+    # Create .nexus/context directory for project context
+    mkdir -p ".nexus/context"
     
     if [ -d "$SCRIPT_DIR/context" ]; then
-        cp -r "$SCRIPT_DIR/context/"* "nexus-context/"
+        cp -r "$SCRIPT_DIR/context/"* ".nexus/context/"
         print_success "Copied context files from local installation"
     else
         # Download from repository
         for file in project decisions ideals; do
             curl -sL "$NEXUS_REPO/raw/main/context/$file.md" \
-                -o "nexus-context/$file.md" || {
+                -o ".nexus/context/$file.md" || {
                 print_error "Failed to download $file.md"
                 exit 1
             }
@@ -131,18 +131,18 @@ install_pattern_examples() {
     
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
-    # Create nexus-patterns directory
-    mkdir -p "nexus-patterns"
+    # Create .nexus/patterns directory
+    mkdir -p ".nexus/patterns"
     
     if [ -d "$SCRIPT_DIR/patterns" ]; then
         # Copy pattern files
-        cp -r "$SCRIPT_DIR/patterns/"* "nexus-patterns/"
+        cp -r "$SCRIPT_DIR/patterns/"* ".nexus/patterns/"
         print_success "Copied pattern examples from local installation"
     else
         # Download from repository
         for agent in product designer architect developer technician; do
             curl -sL "$NEXUS_REPO/raw/main/patterns/$agent.md" \
-                -o "nexus-patterns/$agent.md" || {
+                -o ".nexus/patterns/$agent.md" || {
                 print_warning "No patterns for $agent agent yet"
             }
         done
@@ -212,6 +212,7 @@ This project uses the Nexus V2 agent system. The specialized agents are availabl
 - **architect**: System design and technical architecture
 - **developer**: Implementation and coding
 - **technician**: Debugging, DevOps, and operations
+- **teacher**: Capture and apply new patterns to agents
 
 Agents are defined in `.claude/agents/` and will be automatically available in Claude Code.
 
@@ -223,12 +224,13 @@ The agents will activate automatically based on your requests. Examples:
 - "Architect a real-time messaging system"
 - "Implement the login feature"
 - "Debug the slow API response"
+- "Teach product agent to use tldraw for mockups"
 
 ## Project Context
 
 Project-specific context is maintained in:
-- `nexus-context/` - Project understanding and decisions
-- `nexus-patterns/` - Reusable patterns for each agent
+- `.nexus/context/` - Project understanding and decisions
+- `.nexus/patterns/` - Reusable patterns for each agent (updated by teacher)
 
 Refer to `nexus-guide.md` for detailed usage instructions.
 
@@ -269,7 +271,7 @@ show_next_steps() {
     echo "1. Restart Claude Code to load the new agents"
     echo "2. Review the agents in ${BLUE}.claude/agents/${NC}"
     echo "3. Read the usage guide in ${BLUE}nexus-guide.md${NC}"
-    echo "4. Customize ${BLUE}nexus-context/ideals.md${NC} for your project"
+    echo "4. Customize ${BLUE}.nexus/context/ideals.md${NC} for your project"
     echo "5. Start using agents with natural language:"
     echo ""
     echo "   ${GREEN}Examples:${NC}"

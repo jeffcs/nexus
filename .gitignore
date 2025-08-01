@@ -53,3 +53,6 @@ lab/prototypes/tmp/
 # Nexus V2
 .nexus/learning/
 .nexus/patterns/**/*.json
+
+# Claude Code local settings
+.claude/settings.local.json
