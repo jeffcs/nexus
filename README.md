@@ -149,27 +149,37 @@ When issues arise:
 
 ## Directory Structure
 
-After installation, your project will have:
-
+### Source Repository (this project)
 ```
-.claude/
-├── agents/          # Nexus agent definitions
-└── settings.json    # Claude Code configuration
+nexus/
+├── agents/             # Agent source definitions
+├── context/            # Context templates
+├── patterns/           # Pattern templates
+├── evaluation/         # Evaluation system
+├── install-nexus.sh    # Installation script
+└── README.md           # Documentation
+```
 
-.nexus/
-├── context/         # Your project context (customizable)
-│   ├── project.md   # Project understanding
-│   ├── decisions.md # Decision log
-│   └── ideals.md    # Project principles
-└── patterns/        # Agent-specific patterns
-    ├── product.md   # Product patterns
-    ├── designer.md  # Design patterns
-    ├── architect.md # Architecture patterns
-    ├── developer.md # Code patterns
-    └── technician.md # Operations patterns
-
-nexus-guide.md       # Usage documentation
-CLAUDE.md           # Project instructions
+### After Installation (in your project)
+```
+your-project/
+├── .claude/            # Claude Code configuration
+│   ├── agents/         # Installed agents (gitignored)
+│   └── settings.json   # Claude settings
+├── .nexus/             # Runtime data (gitignored)
+│   ├── context/        # Your project context
+│   │   ├── project.md  # Project understanding
+│   │   ├── decisions.md # Decision log
+│   │   └── ideals.md   # Project principles
+│   ├── patterns/       # Learned patterns
+│   │   ├── product.md  # Product patterns
+│   │   ├── designer.md # Design patterns
+│   │   ├── architect.md # Architecture patterns
+│   │   ├── developer.md # Code patterns
+│   │   └── technician.md # Operations patterns
+│   └── evaluation/     # Evaluation results
+├── nexus-guide.md      # Usage documentation
+└── CLAUDE.md           # Project instructions
 ```
 
 ## Key Principles

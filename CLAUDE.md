@@ -32,25 +32,33 @@ When working on this codebase:
 
 ```
 nexus/
-├── .claude/            # Claude Code configuration
-│   └── agents/         # Claude Code subagents
-│       └── teacher.md  # Teaching agent for patterns
-├── .nexus/             # Active Nexus data
-│   ├── context/        # Project context
-│   └── patterns/       # Agent patterns (updated by teacher)
 ├── agents/             # Source agent definitions
 │   ├── product.md      # Product strategy and research
 │   ├── designer.md     # UI/UX design
 │   ├── architect.md    # System architecture
 │   ├── developer.md    # Code implementation
-│   └── technician.md   # DevOps and debugging
-├── patterns/           # Pattern templates
+│   ├── technician.md   # DevOps and debugging
+│   └── teacher.md      # Teaching agent for patterns
 ├── context/            # Context templates
+├── patterns/           # Pattern templates  
+├── evaluation/         # Agent evaluation system
+│   ├── nexus-eval.sh   # Main evaluation CLI
+│   ├── hot-reload.sh   # Hot-reload for rapid iteration
+│   ├── dashboard/      # Monitoring dashboard
+│   └── lib/            # Evaluation libraries
 ├── archive/            # V1 system archive
 ├── install-nexus.sh    # Installation script
 ├── nexus.md           # User guide
 ├── README.md          # Main documentation
 └── CLAUDE.md          # This file
+
+After installation, these directories are created:
+├── .claude/            # Claude Code configuration (gitignored)
+│   └── agents/         # Installed agent copies
+└── .nexus/             # Runtime data (gitignored)
+    ├── context/        # Project-specific context
+    ├── patterns/       # Learned patterns
+    └── evaluation/     # Evaluation results and analytics
 ```
 
 ## The Agents

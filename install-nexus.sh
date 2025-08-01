@@ -82,7 +82,7 @@ install_agents() {
     
     if [ -d "$SCRIPT_DIR/agents" ]; then
         # Copy from local installation
-        cp -r "$SCRIPT_DIR/agents/"* "$CLAUDE_DIR/agents/"
+        cp "$SCRIPT_DIR/agents/"*.md "$CLAUDE_DIR/agents/"
         print_success "Copied agents from local installation"
     else
         # Download from repository
@@ -242,6 +242,26 @@ EOF
     fi
 }
 
+# Install evaluation system
+install_evaluation_system() {
+    print_header "Installing Evaluation System"
+    
+    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    
+    # Create .nexus/evaluation directory
+    mkdir -p ".nexus/evaluation"
+    
+    if [ -d "$SCRIPT_DIR/evaluation" ]; then
+        # Copy evaluation system files
+        cp -r "$SCRIPT_DIR/evaluation/"* ".nexus/evaluation/"
+        chmod +x ".nexus/evaluation/"*.sh
+        chmod +x ".nexus/evaluation/lib/"*.sh
+        print_success "Installed evaluation system"
+    else
+        print_info "Evaluation system not available in this version"
+    fi
+}
+
 # Update .gitignore
 update_gitignore() {
     print_header "Updating .gitignore"
@@ -258,6 +278,20 @@ update_gitignore() {
         print_success "Updated .gitignore"
     else
         print_info ".gitignore already configured"
+    fi
+    
+    # Add .nexus directory to gitignore (it's a destination)
+    if ! grep -q "^\.nexus/$" ".gitignore"; then
+        echo "" >> .gitignore
+        echo "# Nexus runtime data (patterns and context are user-specific)" >> .gitignore
+        echo ".nexus/" >> .gitignore
+        print_success "Added .nexus/ to .gitignore"
+    fi
+    
+    # Add .claude/agents to gitignore (it's a destination)
+    if ! grep -q "^\.claude/agents/$" ".gitignore"; then
+        echo ".claude/agents/" >> .gitignore
+        print_success "Added .claude/agents/ to .gitignore"
     fi
 }
 
@@ -303,6 +337,7 @@ main() {
     install_context_files
     install_pattern_examples
     install_documentation
+    install_evaluation_system
     setup_claude_settings
     setup_claude_md
     update_gitignore
