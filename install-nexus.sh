@@ -89,21 +89,11 @@ install_agents() {
                 
                 # Inject context if it exists
                 if [ -f ".nexus/context/$agent.md" ]; then
-                    # Read the context file
-                    CONTEXT=$(cat ".nexus/context/$agent.md")
-                    
-                    # Inject context into agent file
-                    awk -v context="$CONTEXT" '
-                        /<!-- NEXUS_CONTEXT_INJECTION -->/ {
-                            print "## Project Context"
-                            print ""
-                            print context
-                            print ""
-                            next
-                        }
-                        /<!-- Context will be injected here during installation -->/ { next }
-                        { print }
-                    ' "$CLAUDE_DIR/agents/$agent.md" > "$CLAUDE_DIR/agents/$agent.md.tmp"
+                    # Create a temporary file with the injection marker replaced
+                    sed '/<!-- NEXUS_CONTEXT_INJECTION -->/{
+                        r .nexus/context/'"$agent"'.md
+                        d
+                    }' "$CLAUDE_DIR/agents/$agent.md" | sed '/<!-- Context will be injected here during installation -->/d' > "$CLAUDE_DIR/agents/$agent.md.tmp"
                     
                     mv "$CLAUDE_DIR/agents/$agent.md.tmp" "$CLAUDE_DIR/agents/$agent.md"
                     print_success "Installed $agent agent with context"
