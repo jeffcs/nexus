@@ -73,7 +73,7 @@ create_directory_structure() {
     print_success "Created Claude directory structure"
 }
 
-# Download or copy agent files
+# Download or copy agent files with context injection
 install_agents() {
     print_header "Installing Nexus Agents"
     
@@ -81,22 +81,40 @@ install_agents() {
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     
     if [ -d "$SCRIPT_DIR/agents" ]; then
-        # Copy from local installation
-        cp "$SCRIPT_DIR/agents/"*.md "$CLAUDE_DIR/agents/"
-        print_success "Copied agents from local installation"
-    else
-        # Download from repository
-        print_info "Downloading agents from repository..."
-        
-        # Download each agent
+        # Copy agents and inject context
         for agent in product designer architect developer technician teacher; do
-            curl -sL "$NEXUS_REPO/raw/main/agents/$agent.md" \
-                -o "$CLAUDE_DIR/agents/$agent.md" || {
-                print_error "Failed to download $agent agent"
-                exit 1
-            }
-            print_success "Downloaded $agent agent"
+            if [ -f "$SCRIPT_DIR/agents/$agent.md" ]; then
+                # Copy agent file
+                cp "$SCRIPT_DIR/agents/$agent.md" "$CLAUDE_DIR/agents/$agent.md"
+                
+                # Inject context if it exists
+                if [ -f ".nexus/context/$agent.md" ]; then
+                    # Read the context file
+                    CONTEXT=$(cat ".nexus/context/$agent.md")
+                    
+                    # Inject context into agent file
+                    awk -v context="$CONTEXT" '
+                        /<!-- NEXUS_CONTEXT_INJECTION -->/ {
+                            print "## Project Context"
+                            print ""
+                            print context
+                            print ""
+                            next
+                        }
+                        /<!-- Context will be injected here during installation -->/ { next }
+                        { print }
+                    ' "$CLAUDE_DIR/agents/$agent.md" > "$CLAUDE_DIR/agents/$agent.md.tmp"
+                    
+                    mv "$CLAUDE_DIR/agents/$agent.md.tmp" "$CLAUDE_DIR/agents/$agent.md"
+                    print_success "Installed $agent agent with context"
+                else
+                    print_success "Installed $agent agent"
+                fi
+            fi
         done
+    else
+        print_error "Agent source files not found"
+        exit 1
     fi
 }
 
@@ -110,43 +128,12 @@ install_context_files() {
     mkdir -p ".nexus/context"
     
     if [ -d "$SCRIPT_DIR/context" ]; then
+        # Copy all context files (including agent contexts)
         cp -r "$SCRIPT_DIR/context/"* ".nexus/context/"
         print_success "Copied context files from local installation"
     else
-        # Download from repository
-        for file in project decisions ideals; do
-            curl -sL "$NEXUS_REPO/raw/main/context/$file.md" \
-                -o ".nexus/context/$file.md" || {
-                print_error "Failed to download $file.md"
-                exit 1
-            }
-            print_success "Downloaded $file.md"
-        done
-    fi
-}
-
-# Install pattern examples
-install_pattern_examples() {
-    print_header "Installing Pattern Examples"
-    
-    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    
-    # Create .nexus/patterns directory
-    mkdir -p ".nexus/patterns"
-    
-    if [ -d "$SCRIPT_DIR/patterns" ]; then
-        # Copy pattern files
-        cp -r "$SCRIPT_DIR/patterns/"* ".nexus/patterns/"
-        print_success "Copied pattern examples from local installation"
-    else
-        # Download from repository
-        for agent in product designer architect developer technician; do
-            curl -sL "$NEXUS_REPO/raw/main/patterns/$agent.md" \
-                -o ".nexus/patterns/$agent.md" || {
-                print_warning "No patterns for $agent agent yet"
-            }
-        done
-        print_success "Pattern system initialized"
+        print_error "Context files not found"
+        exit 1
     fi
 }
 
@@ -155,19 +142,8 @@ install_pattern_examples() {
 install_documentation() {
     print_header "Installing Documentation"
     
-    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    
-    if [ -f "$SCRIPT_DIR/nexus.md" ]; then
-        cp "$SCRIPT_DIR/nexus.md" "nexus-guide.md"
-        print_success "Installed Nexus documentation"
-    else
-        curl -sL "$NEXUS_REPO/raw/main/nexus.md" \
-            -o "nexus-guide.md" || {
-            print_error "Failed to download documentation"
-            exit 1
-        }
-        print_success "Downloaded Nexus documentation"
-    fi
+    # Documentation is now in README.md and CLAUDE.md only
+    print_info "Documentation available in README.md and CLAUDE.md"
 }
 
 # Create Claude settings file
@@ -333,9 +309,8 @@ main() {
     
     # Installation steps
     create_directory_structure
-    install_agents
     install_context_files
-    install_pattern_examples
+    install_agents
     install_documentation
     install_evaluation_system
     setup_claude_settings

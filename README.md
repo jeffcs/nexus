@@ -153,8 +153,7 @@ When issues arise:
 ```
 nexus/
 ├── agents/             # Agent source definitions
-├── context/            # Context templates
-├── patterns/           # Pattern templates
+├── context/            # Context templates (agent + project)
 ├── evaluation/         # Evaluation system
 ├── install-nexus.sh    # Installation script
 └── README.md           # Documentation
@@ -164,21 +163,17 @@ nexus/
 ```
 your-project/
 ├── .claude/            # Claude Code configuration
-│   ├── agents/         # Installed agents (gitignored)
+│   ├── agents/         # Installed agents with context (gitignored)
 │   └── settings.json   # Claude settings
 ├── .nexus/             # Runtime data (gitignored)
-│   ├── context/        # Your project context
-│   │   ├── project.md  # Project understanding
-│   │   ├── decisions.md # Decision log
-│   │   └── ideals.md   # Project principles
-│   ├── patterns/       # Learned patterns
-│   │   ├── product.md  # Product patterns
-│   │   ├── designer.md # Design patterns
-│   │   ├── architect.md # Architecture patterns
-│   │   ├── developer.md # Code patterns
-│   │   └── technician.md # Operations patterns
+│   ├── context/        # Agent contexts (updatable)
+│   │   ├── product.md  # Product agent knowledge
+│   │   ├── designer.md # Designer agent knowledge
+│   │   ├── architect.md # Architect agent knowledge
+│   │   ├── developer.md # Developer agent knowledge
+│   │   ├── technician.md # Technician agent knowledge
+│   │   └── teacher.md  # Teacher agent knowledge
 │   └── evaluation/     # Evaluation results
-├── nexus-guide.md      # Usage documentation
 └── CLAUDE.md           # Project instructions
 ```
 
@@ -216,6 +211,41 @@ Each agent excels at their domain:
 
 ## Usage Examples
 
+### Product Research
+```
+"Research best practices for user authentication"
+"What features should we build for small businesses?"
+"Is real-time sync worth implementing?"
+```
+
+### Design Work
+```
+"Design a user onboarding flow"
+"How should users manage their settings?"
+"Make this form more accessible"
+```
+
+### Architecture
+```
+"How should we structure the payment system?"
+"Design the API for user management"
+"What's the best database schema for this?"
+```
+
+### Development
+```
+"Implement the login feature"
+"Write tests for the user service"
+"Refactor this code for better performance"
+```
+
+### Operations
+```
+"Debug why the API is slow"
+"Set up monitoring for the service"
+"Optimize database queries"
+```
+
 ### New Feature Development
 ```
 You: "I need to add user notifications"
@@ -227,46 +257,27 @@ Developer: [implements the feature]
 Technician: [ensures production readiness]
 ```
 
-### Debugging Session
+### Teaching Agents
 ```
-You: "The app is crashing on mobile devices"
-
-Technician: [analyzes the issue]
-Developer: [implements fix]
-Designer: [verifies UX isn't affected]
+"teach product agent to use tldraw for mockups"
+"teach architect to prefer Python for backend services"
+"teach designer to always consider accessibility"
 ```
 
-### Performance Optimization
-```
-You: "The dashboard is loading slowly"
+## Context System
 
-Technician: [profiles and identifies bottlenecks]
-Architect: [designs optimization strategy]
-Developer: [implements improvements]
-Designer: [ensures UX isn't degraded]
-```
+Each agent has a comprehensive context file in `.nexus/context/[agent].md` that includes:
+- Project understanding specific to their role
+- Learned knowledge and insights
+- Collaboration patterns with other agents
+- Custom instructions from teaching
 
-## Customization
-
-### Project Ideals
-Edit `.nexus/context/ideals.md` to define your project's:
-- Core values
-- Development principles
-- Quality standards
-- Team philosophy
-
-### Decision Log
-Document important decisions in `.nexus/context/decisions.md`:
-- Architectural choices
-- Technology selections
-- Design decisions
-- Process changes
-
-### Pattern Library
-Patterns are stored in `.nexus/patterns/[agent].md` and can be extended by:
+This context is automatically injected into agents during installation and can be updated:
 - Using the teacher agent: "teach architect to use Python for backends"
-- Manually editing pattern files
-- Building a knowledge base over time
+- Manually editing context files in `.nexus/context/`
+- The teacher agent updates both the context file AND the installed agent
+
+The unified context system keeps all agent knowledge in one place per agent.
 
 ## Best Practices
 

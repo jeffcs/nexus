@@ -4,14 +4,15 @@
 
 This is the source code for the Nexus V2 agent framework for Claude Code. The framework provides five specialized AI agents that work together to help developers build better software.
 
-## IMPORTANT: Pattern Learning System
+## IMPORTANT: Context System
 
-When using any Nexus agent, ALWAYS:
-1. First check their learned patterns in `.nexus/patterns/[agent].md`
-2. Apply these patterns to the agent's behavior
-3. Consider the patterns as extensions of the agent's core capabilities
+The Nexus context system is already integrated into each agent. Agent contexts are injected during installation and contain:
+- Project understanding and constraints
+- Learned knowledge and insights
+- Collaboration patterns
+- Custom instructions
 
-Example: Before using the product agent, check `.nexus/patterns/product.md` for any learned behaviors like "use tldraw for mockups" or "always check competitor features first".
+The teacher agent can update these contexts with new knowledge: "teach architect to use Python for backends"
 
 ## Critical Patterns (Enforced Immediately)
 
@@ -23,10 +24,10 @@ Example: Before using the product agent, check `.nexus/patterns/product.md` for 
 When working on this codebase:
 
 1. **Agent Quality**: Maintain exemplary agent definitions that showcase best practices
-2. **Pattern Library**: Keep patterns concise, practical, and reusable
+2. **Context System**: Keep context templates well-organized and comprehensive
 3. **Installation**: Ensure the installation process remains simple and reliable
 4. **Documentation**: Keep all documentation clear and up-to-date
-5. **Learning Integration**: Always check and apply patterns from `.nexus/patterns/`
+5. **Learning Integration**: Context is automatically injected into agents during installation
 
 ## Project Structure
 
@@ -38,9 +39,14 @@ nexus/
 │   ├── architect.md    # System architecture
 │   ├── developer.md    # Code implementation
 │   ├── technician.md   # DevOps and debugging
-│   └── teacher.md      # Teaching agent for patterns
-├── context/            # Context templates
-├── patterns/           # Pattern templates  
+│   └── teacher.md      # Teaching agent for knowledge
+├── context/            # Context templates for all agents
+│   ├── product.md      # Product agent context
+│   ├── designer.md     # Designer agent context
+│   ├── architect.md    # Architect agent context
+│   ├── developer.md    # Developer agent context
+│   ├── technician.md   # Technician agent context
+│   └── teacher.md      # Teacher agent context
 ├── evaluation/         # Agent evaluation system
 │   ├── nexus-eval.sh   # Main evaluation CLI
 │   ├── hot-reload.sh   # Hot-reload for rapid iteration
@@ -48,16 +54,14 @@ nexus/
 │   └── lib/            # Evaluation libraries
 ├── archive/            # V1 system archive
 ├── install-nexus.sh    # Installation script
-├── nexus.md           # User guide
 ├── README.md          # Main documentation
-└── CLAUDE.md          # This file
+└── CLAUDE.md          # This file (development guide)
 
 After installation, these directories are created:
 ├── .claude/            # Claude Code configuration (gitignored)
-│   └── agents/         # Installed agent copies
+│   └── agents/         # Installed agents with injected context
 └── .nexus/             # Runtime data (gitignored)
-    ├── context/        # Project-specific context
-    ├── patterns/       # Learned patterns
+    ├── context/        # Agent contexts (updatable by teacher)
     └── evaluation/     # Evaluation results and analytics
 ```
 
