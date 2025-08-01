@@ -50,6 +50,9 @@ lab/prototypes/tmp/
 # Generated files
 *.generated.*
 
-# Nexus V2
-.nexus/learning/
-.nexus/patterns/**/*.json
+# Nexus V2 destination directories (installed by install-nexus.sh)
+.nexus/
+.claude/agents/
+
+# Claude Code local settings
+.claude/settings.local.json
